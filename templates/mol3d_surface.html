@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+ <h3 id="satisfied" style="color:gray;">This is the surface to be generated. Are you satisfied?</h3>
+ <a id="yes" class="btn btn-warning" href="{% url 'ESTM_calc' job_pk %}">YES</a>
+ <a id="no" class="btn btn-warning" disabled>NO</a>
+
+<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<div id="container-01" class="mol-container"></div>
+<style>
+.mol-container {
+  width: 60%;
+  height: 500px;
+  position: relative;
+  left: 20%;
+}
+</style>
+
+<script>
+var x = document.getElementById('satisfied');
+var y = document.getElementById('yes');
+var z = document.getElementById('no');
+var state = '{{ state }}';
+if (state === 'prep') {
+    x.style.display = 'block';
+    y.style.display = 'inline';
+    z.style.display = 'inline';
+  } else {
+    x.style.display = 'none';
+    y.style.display = 'none';
+    z.style.display = 'none';
+  }
+</script>
+
+<script>
+let element = $('#container-01');
+let config = { backgroundColor: 'white' };
+let viewer = $3Dmol.createViewer( element, config ); 
+var xyzUri = '{{ url }}';
+var urlmolecule = '{{ urlmolecule }}';
+
+
+
+$.get( urlmolecule, function(data) {
+  var m1=viewer.addModel( data, "xyz" );
+  viewer.setStyle({model:m1},{stick: {color: 'spectrum'}});
+  viewer.zoomTo();
+  viewer.zoom(0.9, 500);
+  viewer.render();
+});
+$.get( xyzUri, function(data) {
+  var m2=viewer.addModel( data, "xyz" );
+  viewer.setStyle({model:m2},{sphere: {color: 'red', radius: '0.2', model: 'm2'}});
+  viewer.zoomTo();
+  viewer.zoom(0.9, 500);
+  viewer.render();
+});
+
+
+</script>
+
+ <!--  <p>{{ url }}</p> -->
+ {% endblock %}

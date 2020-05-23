@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <h1>Log for Job #{{job_pk}}</h1>
+
+  <a id="vdw_bot" class="btn btn-warning" href="{% url 'mol3d_surf' job_pk %}">View vdW surface</a>
+  <a id="estm_bot" class="btn btn-warning" href="{% url 'mol3d_estm' job_pk %}">View ESTM surface</a>
+  <table class="table table-striped">
+    <thead>
+      <th style="width:5%">Log ID</th>
+      <th style="width:15%">Time</th>
+      <th style="width:10%">Stream</th>
+      <th style="width:70%">Content</th>
+    </thead>
+    <tbody id="example-job-log-rows"></tbody>
+  </table>
+  <a id="cancel" class="btn btn-default" data-toggle="tooltip" data-placement="top" onclick="window.history.back()"
+73	            href="#" title="Go back.">Go Back</a>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+
+<script>
+var x = document.getElementById('vdw_bot');
+var y = document.getElementById('estm_bot');
+var state = '{{ state }}';
+var status = '{{ status }}'
+if (state === 'prep') {
+    x.style.display = 'inline';
+    y.style.display = 'none';
+  } else if (status === "success") {
+    x.style.display = 'inline';
+    y.style.display = 'inline';
+  } else {
+    x.style.display = 'inline';
+    y.style.display = 'none';    
+  }
+</script>
+
+<script>
+socket = new ReconnectingWebSocket("ws://" + window.location.host + "/ws/job-log/{{ job_pk }}/");
+
+socket.onmessage = function(e) {
+  var { log_id, time, content, stream } = JSON.parse(e.data);
+
+  $('#example-job-log-rows').append(
+    $('<tr>').append(
+      $('<td>').text('' + log_id)
+    ).append(
+      $('<td>').text('' + new Date(time).toLocaleString())
+    ).append(
+      $('<td>').text('' + stream)
+    ).append(
+      $('<td>').append(
+        $('<pre>').text('' + content)
+      )
+    )
+  );
+}
+
+socket.onopen = function() { }
+
+// Call onopen directly if socket is already open
+if (socket.readyState == WebSocket.OPEN) socket.onopen();
+</script>
+
+{% endblock content %}

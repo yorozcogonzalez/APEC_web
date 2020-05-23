@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+ <h3 style="color:gray;">This is the ESTM map</h3>
+<!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<div style="height: 600px; width: 600px; position: relative;" class='viewer_3Dmoljs' data-href={{url}} data-type='mol2' data-backgroundcolor='0xffffff' data-style='sphere:colorscheme=charge'></div> -->
+
+<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<div id="container-01" class="mol-container"></div>
+<style>
+.mol-container {
+  width: 60%;
+  height: 500px;
+  position: relative;
+  left: 20%;
+}
+</style>
+
+<div class="slidecontainer">
+  <input type="range" min="0" max="1" step="0.05" value="0.7" class="slider" id="myRange">
+</div>
+
+<style>
+.slidecontainer {
+  width: 25%; /* Width of the outside container */
+}
+.slidecontainer:hover {
+  opacity: 1.0
+}
+
+</style>
+
+<p> Opacity: <span id="demo"></span></p>
+<script>
+
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+let element = $('#container-01');
+let config = { backgroundColor: 'white' };
+var mol2Uri = '{{ urlmol2 }}';
+var xyzUri = '{{ urlxyz }}';
+var limit = parseInt('{{ lim }}')
+
+// Update the current slider value (each time you drag the slider handle)
+
+  function plotear (valor) {
+  let viewer = $3Dmol.createViewer( element, config ); 
+
+  $.get( mol2Uri, function(data) {
+    viewer.addModel( data, "mol2" );
+    viewer.addSurface($3Dmol.SurfaceType.SES, {map:{prop:'partialCharge',scheme:new $3Dmol.Gradient.RWB(-1*limit,limit)}, opacity:valor});
+    viewer.zoomTo();
+    viewer.zoom(0.9);
+  });
+  
+  $.get( xyzUri, function(data) {
+    viewer.addModel( data, "xyz" );
+    viewer.setStyle({stick: {color: 'spectrum'}});
+/*    viewer.setStyle({sphere:{colorscheme:{prop:'partialCharge',gradient: new $3Dmol.Gradient.RWB(-.0074,.0074)}}}); */
+    viewer.zoomTo();
+    viewer.zoom(0.9);
+    viewer.render();
+  });
+  };
+
+plotear(0.7);
+slider.onchange = function() {
+  output.innerHTML = this.value;
+  var valor = this.value;
+
+  plotear(valor);
+};
+</script>
+
+ <!-- <p>{{ urlmol2 }}</p> -->
+{% endblock %}

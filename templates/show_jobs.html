@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">  <!-- contenedor con ancho fijo, auque se puede contraer o expandir -->
+  <h1>List of Jobs</h1>
+  <a class="btn btn-warning" href="{% url method %}">Create new {{ method }} Job</a>
+   <table class="table">
+    <thead>
+      <th>ID</th>
+      <th>Title</th>
+      <th>vdW Surface</th>
+      <th>ESTM Map</th>
+      <th>Modified</th>
+      <th>See log...</th>
+      <th>Delete</th>
+    </thead>
+    <tbody id="job-status-rows"></tbody>
+  </table>
+</div>
+
+<script src="https://cdn.rawgit.com/joewalnes/reconnecting-websocket/fd7c819bb15eeee3452c17e317c0a3664c442965/reconnecting-websocket.min.js"></script>
+
+<script>
+/* Opening a websocket */
+/* https://javascript.info/websocket */
+socket = new ReconnectingWebSocket("ws://" + window.location.host + "/ws/job-user/");
+
+socket.onmessage = function(e) {
+  console.log("onmessage:", e);
+  var { job_id, title, status, modified, state } = JSON.parse(e.data);
+      tbody = $('#job-status-rows');
+      trs = tbody.children();
+
+      if (state === "prep") {
+        var vdw = '<span class="label label-' + status + '">' + status + '</span>';
+        var estm = '<span class="label label-' + "initial" + '">' + "pending" + '</span>';
+      } else {
+        var vdw = '<span class="label label-' + "success" + '">' + "success" + '</span>';
+        var estm = '<span class="label label-' + status + '">' + status + '</span>';
+      };
+
+      tr = $('<tr>').append(
+        $('<td>').text('' + job_id)
+      ).append(
+        $('<td>').text('' + title)
+      ).append(
+        $('<td>').append(vdw)
+      ).append(
+        $('<td>').append(estm)
+      ).append(
+        $('<td>').text('' + new Date(modified).toLocaleString())
+      ).append(
+        $('<td>').append('<a href="' + "{% url 'logs' 999 %}".replace (999, job_id) +
+                   '" title="Click to see the log of this Job."><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> ' +
+                   title + '</a>'
+        )
+      ).append(
+        $('<td>').append('<a href="' + "{% url 'delete' 999 %}".replace (999, job_id) +'" title="Click to delete this Job" class="confirm-delete" ><span class="glyphicon glyphicon-trash" aria-hidden="true"</span></a>'
+        )
+      );
+      found = false;
+
+  trs.each((i, el) => {
+    var id = +el.firstChild.textContent;
+
+    if (id === job_id) {
+      $(el).replaceWith(tr);
+      found = true;
+      return false;
+    }
+  });
+
+  if (!found) {
+    tr.appendTo(tbody);
+  }
+
+  trs = tbody.children();
+
+  // Sort by date
+  trs.sort((a, b) => {
+    return b.lastChild.previousSibling.textContent.localeCompare(a.lastChild.previousSibling.textContent);
+  });
+
+  trs.detach().appendTo(tbody);
+}
+
+socket.onopen = function(e) {
+  console.log("onopen:", e);
+}
+
+// Call onopen directly if socket is already open
+if (socket.readyState == WebSocket.OPEN) socket.onopen();
+
+$(document).on('click', '.confirm-delete', function(){
+    return confirm('Are you sure you want to delete this Job? You will lost the ESTM map. \n It can take a few seconds if jobs need to be canceled.');
+})
+
+</script>
+
+
+
+{% endblock content %}

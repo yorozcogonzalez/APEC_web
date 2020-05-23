@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+ <h3>This is the ESTM map</h3>
+<!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<div style="height: 600px; width: 600px; position: relative;" class='viewer_3Dmoljs' data-href={{url}} data-type='mol2' data-backgroundcolor='0xffffff' data-style='sphere:colorscheme=charge'></div> -->
+
+<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<div id="container-01" class="mol-container"></div>
+
+<style>
+.mol-container {
+  width: 60%;
+  height: 400px;
+  position: relative;
+}
+</style>
+
+<script>
+$(function() {
+  let element = $('#container-01');
+  let config = { backgroundColor: 'white' };
+  let viewer = $3Dmol.createViewer( element, config );
+  let mol2Uri = '/media/results/newone/1fas.pqr';
+   jQuery.ajax( mol2Uri, { 
+    success: function(data) {
+      viewer.addModel( data, "pqr" );
+      jQuery.ajax( '/media/results/newone/1fas.cube', {
+      	success: function(volumedata) {
+      		viewer.addSurface($3Dmol.SurfaceType.VDW, {opacity:0.85,voldata: new $3Dmol.VolumeData(volumedata, "cube"), volscheme: new $3Dmol.Gradient.RWB(-10,-10)},{});	
+      	},
+        error: function(hdr, status, err) {
+      		console.error( "Failed to load mol2 " + mol2Uri + ": " + err );
+    	},
+  	
+      })
+                      /* load data */
+      viewer.zoomTo();                                      /* set camera */
+      viewer.render();                                      /* render scene */
+      viewer.zoom(1.0, 1000);                               /* slight zoom */
+    },
+    error: function(hdr, status, err) {
+      console.error( "Failed to load mol2 " + mol2Uri + ": " + err );
+    },
+  });
+});
+</script>
+
+  <p>{{ url }}</p>
+{% endblock %}
+
+
+
