@@ -418,7 +418,7 @@ def job_result_path(instance, filename):
     """
     #return 'results/{}/{}'.format(instance.job.uuid, filename)
     # YOE
-    return 'results/{}/{}'.format(instance.job.title, filename)
+    return 'results/{}/{}/{}'.format(instance.job.owner.username, instance.job.title, filename)
 
 
 @python_2_unicode_compatible

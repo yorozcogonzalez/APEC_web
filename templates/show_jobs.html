@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">  <!-- contenedor con ancho fijo, auque se puede contraer o expandir -->
   <h1>List of Jobs</h1>
-  <a class="btn btn-warning" href="{% url method %}">Create new {{ method }} Job</a>
+  <a class="btn btn-warning" href="{% url method 'ok' %}">Create new {{ method }} Job</a>
    <table class="table">
     <thead>
       <th>ID</th>

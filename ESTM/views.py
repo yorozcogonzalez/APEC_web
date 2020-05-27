@@ -18,6 +18,8 @@ import textwrap
 import logging
 import time
 
+from django.db import IntegrityError
+
 logger = logging.getLogger(__name__)  # pylint: disable=C0103
 
 class ESTM_View(LoginRequiredMixin, TemplateView):
@@ -29,17 +31,25 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 		context = super(ESTM_View, self).get_context_data(**kwargs)
 		context['form'] = self.form_class()
 		context['method'] = 'ESTM'
+		context['check'] = kwargs['check']
 		return context
 
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST, request.FILES)
 		if form.is_valid():
-			estm = ESTM_object.objects.create(xyz_file = request.FILES['xyz_file'],
-#			estm.owner = request.user
-			multiplicity = form.cleaned_data['multiplicity'],
-			charge = form.cleaned_data['charge'],
-			project_name = form.cleaned_data['project_name'],
+			try:
+				estm = ESTM_object.objects.create(xyz_file = request.FILES['xyz_file'],
+				owner = request.user,
+				project_name = form.cleaned_data['project_name'],
+				charge = form.cleaned_data['charge'],
+				multiplicity = form.cleaned_data['multiplicity'],
+				basis_set = form.cleaned_data['basis_set'],
+				num_states = form.cleaned_data['num_states'],
+				selected_state = form.cleaned_data['selected_state'],				
 			)
+
+			except IntegrityError:
+				return render(request, self.template_name, {'form': form})				
 #			estm.save()
 
 			(interpreter, _) = Interpreter.objects.get_or_create(
@@ -79,15 +89,18 @@ cp $remote/templates/vdw_surface_tp.py vdw_surface.py
 cp $remote/templates/ESTM.py .
 cp $remote/templates/create_inputs.sh create_inputs_%s.sh
 source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
-echo Multiplicity %s >> Infos.dat
-echo Charge %s >> Infos.dat
+
 echo Project %s >> Infos.dat
 echo xyz_name %s >> Infos.dat
-echo exc_state 1 >> Infos.dat
+echo charge %s >> Infos.dat
+echo multiplicity %s >> Infos.dat
+echo basis_set %s >> Infos.dat
+echo num_states %s >> Infos.dat
+echo selected_state %s >> Infos.dat
 sed -i "s/FILENAME/%s/" vdw_surface.py
 python vdw_surface.py
-	    	''') %(settings.REMOTE_DIRECTORY, estm.project_name, estm.multiplicity, estm.charge, 
-	    	estm.project_name, filename, filename)
+	    	''') %(settings.REMOTE_DIRECTORY, estm.project_name, estm.project_name, filename, estm.charge, estm.multiplicity,
+	    	estm.basis_set, estm.num_states, estm.selected_state, filename)
 			remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
 			(job, _) = Job.objects.get_or_create(
 				title=estm.project_name,
@@ -114,7 +127,8 @@ python vdw_surface.py
 			#return render(request, 'estm_job_status.html', {'newdoc': newdoc}) # Te redirecciona pero no hace las funciones del view
 			return redirect('method', method='ESTM')
 		else:
-			return render(request, self.template_name, {'form': form})
+			return redirect('ESTM', check='error')
+#			return render(request, self.template_name, {'form': form})
 
 class ESTM_Calculation(LoginRequiredMixin, TemplateView):
 	template_name = 'show_jobs.html'

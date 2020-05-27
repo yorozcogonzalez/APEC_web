@@ -4,6 +4,10 @@
 
 <h3>This is an {{ method }} calculation</h3>
 
+{% if check != 'ok' %}
+	<p style="color:red; font-size:20px"> Project Name previously used!</p>
+{% endif %}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
