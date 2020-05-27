@@ -33,7 +33,7 @@ class JobUserConsumer(AsyncWebsocketConsumer):
 
     async def send_last_jobs(self, user):
 
-        last_jobs = user.jobs.order_by('-modified')[:10]
+        last_jobs = user.jobs.order_by('-modified')[:500]
 
         for job in last_jobs:
 
