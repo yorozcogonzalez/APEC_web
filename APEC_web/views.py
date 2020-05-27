@@ -80,8 +80,8 @@ class mol3dSurfView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(mol3dSurfView, self).get_context_data(**kwargs)
         job_data = Job.objects.get(pk=int(kwargs['job_pk']))
-        url = settings.MEDIA_URL + 'results/' + job_data.estm_data.project_name + '/pointsXx.xyz'
-        urlpath = settings.MEDIA_ROOT + 'results/' + job_data.estm_data.project_name + '/pointsXx.xyz'
+        url = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + job_data.estm_data.project_name + '/pointsXx.xyz'
+        urlpath = settings.MEDIA_ROOT + 'results/' + job_data.owner.username + '/' + job_data.estm_data.project_name + '/pointsXx.xyz'
         urlmolecule = job_data.estm_data.xyz_file.url
         check = os.path.exists(urlpath)
         while not check:
@@ -102,8 +102,8 @@ class mol3dESTMView(LoginRequiredMixin, TemplateView):
         context = super(mol3dESTMView, self).get_context_data(**kwargs)
         job_data = Job.objects.get(pk=int(kwargs['job_pk']))
         project_name = job_data.estm_data.project_name
-        urlmol2 = settings.MEDIA_URL + 'results/' + project_name + '/' + project_name + '.mol2'
-        urlxyz = settings.MEDIA_URL + 'results/' + project_name + '/' + project_name + '.xyz'
+        urlmol2 = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + project_name + '/' + project_name + '.mol2'
+        urlxyz = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + project_name + '/' + project_name + '.xyz'
 
         limit = 1.0
 

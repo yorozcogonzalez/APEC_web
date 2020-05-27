@@ -365,10 +365,10 @@ exit 0
 			os.remove(job_data.estm_data.xyz_file.path)
 		except:
 			pass
-		path = settings.MEDIA_ROOT + "results/" + job_data.title
+		path = settings.MEDIA_ROOT + "results/" + job_data.owner.username + "/" + job_data.title
 		while os.path.isdir(path):
 			try:
-				shutil.rmtree(settings.MEDIA_ROOT + "results/" + job_data.title)
+				shutil.rmtree(settings.MEDIA_ROOT + "results/" + job_data.owner.username + "/" + job_data.title)
 			except:
 				pass
 			time.sleep(1)
