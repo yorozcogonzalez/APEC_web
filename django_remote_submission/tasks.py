@@ -358,34 +358,33 @@ def copy_file_to_server(job_pk, password=None, public_key_filename=None, usernam
 
 
     with wrapper.connect(password, public_key_filename):
-        copy_status = None
+#        copy_status = None
         remote_directory = job.remote_directory
         local_file = job.estm_data.xyz_file.path
-        copy_status = wrapper.copy_file(local_file, remote_directory)
+        wrapper.copy_file(local_file, remote_directory)
 
-        while copy_status is None:
-            time.sleep(0.5)
+        time.sleep(1)
 
-        if copy_status:
-            log = Log(
-                time=timezone.now(),
-                content='File {} successfully copied to {}.'.format(
-                    local_file, remote_directory,
-                ),
-                stream='stdout',
-                job=job,
-            )
-            log.save()
-        else:
-            log = Log(
-                time=timezone.now(),
-                content='File {} Un-successfully copied to {}.'.format(
-                    local_file, remote_directory,
-                ),
-                stream='stderr',
-                job=job,
-            )
-            log.save()
+#        if copy_status:
+        log = Log(
+            time=timezone.now(),
+            content='File {} successfully copied to {}.'.format(
+                local_file, remote_directory,
+            ),
+            stream='stdout',
+            job=job,
+        )
+        log.save()
+    #    else:
+    #        log = Log(
+    #            time=timezone.now(),
+    #            content='File {} Un-successfully copied to {}.'.format(
+    #                local_file, remote_directory,
+    #            ),
+    #            stream='stderr',
+    #            job=job,
+    #        )
+    #        log.save()
 
     return { }
 
