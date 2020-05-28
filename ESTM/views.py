@@ -84,6 +84,7 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 			program = textwrap.dedent('''\
 #!/bin/bash
 remote=%s
+filename=%s
 cp $remote/templates/Infos.dat .
 cp $remote/templates/vdw_surface_tp.py vdw_surface.py
 cp $remote/templates/ESTM.py .
@@ -91,16 +92,26 @@ cp $remote/templates/create_inputs.sh create_inputs_%s.sh
 source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
 
 echo Project %s >> Infos.dat
-echo xyz_name %s >> Infos.dat
+echo xyz_name $filename >> Infos.dat
 echo charge %s >> Infos.dat
 echo multiplicity %s >> Infos.dat
 echo basis_set %s >> Infos.dat
 echo num_states %s >> Infos.dat
 echo selected_state %s >> Infos.dat
-sed -i "s/FILENAME/%s/" vdw_surface.py
+sed -i "s/FILENAME/$filename/" vdw_surface.py
+check="no"
+if [[ -f $filename ]]; then
+	check="yes"
+fi
+while [[ $check != "yes" ]]; do
+    sleep 0.5
+	if [[ -f $filename ]]; then
+		check="yes"
+	fi
+done
 python vdw_surface.py
-	    	''') %(settings.REMOTE_DIRECTORY, estm.project_name, estm.project_name, filename, estm.charge, estm.multiplicity,
-	    	estm.basis_set, estm.num_states, estm.selected_state, filename)
+	    	''') %(settings.REMOTE_DIRECTORY, filename, estm.project_name, estm.project_name, estm.charge, estm.multiplicity,
+	    	estm.basis_set, estm.num_states, estm.selected_state)
 			remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
 			(job, _) = Job.objects.get_or_create(
 				title=estm.project_name,

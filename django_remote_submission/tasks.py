@@ -363,7 +363,7 @@ def copy_file_to_server(job_pk, password=None, public_key_filename=None, usernam
         local_file = job.estm_data.xyz_file.path
         copy_status = wrapper.copy_file(local_file, remote_directory)
 
-        time.sleep(1)
+        time.sleep(2)
 
         if copy_status:
             log = Log(
