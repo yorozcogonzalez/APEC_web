@@ -358,12 +358,13 @@ def copy_file_to_server(job_pk, password=None, public_key_filename=None, usernam
 
 
     with wrapper.connect(password, public_key_filename):
-        
+        copy_status = None
         remote_directory = job.remote_directory
         local_file = job.estm_data.xyz_file.path
         copy_status = wrapper.copy_file(local_file, remote_directory)
 
-        time.sleep(0.5)
+        while copy_status is None:
+            time.sleep(0.5)
 
         if copy_status:
             log = Log(
