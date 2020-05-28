@@ -18,6 +18,7 @@ import six
 from django.utils.timezone import now
 from paramiko import AuthenticationException, BadHostKeyException
 from paramiko.client import AutoAddPolicy, SSHClient
+import paramiko
 
 try:
     from shlex import quote as cmd_quote
@@ -246,8 +247,8 @@ class RemoteWrapper(object):
                     username=username,
                     password=password,
                     timeout=5,
-                    
                 )
+                client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             except AuthenticationException as e:
                 logger.error("Authenctication error! Wrong password...")
                 six.raise_from(ValueError('incorrect password'), e)
@@ -266,6 +267,7 @@ class RemoteWrapper(object):
                         username=username,
                         key_filename=public_key_filename,
                     )
+                    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())  # YOE
                 except AuthenticationException as e:
                     logger.error("Problems connecting with the public key...")
                     six.raise_from(ValueError('incorrect public key'), e)

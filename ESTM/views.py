@@ -123,6 +123,10 @@ python vdw_surface.py
 				interpreter=interpreter,
 				estm_data=estm
 			)
+
+			while not os.path.isfile(job.estm_data.xyz_file.path):
+				time.sleep(1)
+
 			copy_file_to_server.delay(
 				job_pk=job.pk,
 				password=settings.REMOTE_PASSWORD,

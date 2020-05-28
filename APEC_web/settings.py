@@ -33,7 +33,7 @@ SECRET_KEY = '#9-u7b%vyd_50j!bl)ii=6thk^&pkf1a!nf70uh&bnclbvbgv-'
 
 #./manage collectstatic
 #DEBUG = False
-#ALLOWED_HOSTS = ['ec2-13-59-52-27.us-east-2.compute.amazonaws.com', '18.188.25.119', 'www.4qmmm.com', '4qmmm.com']
+#ALLOWED_HOSTS = ['ec2-18-188-25-119.us-east-2.compute.amazonaws.com', '18.188.25.119', 'www.4qmmm.com', '4qmmm.com']
 
 DEBUG = True
 ALLOWED_HOSTS = []
