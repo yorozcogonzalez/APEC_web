@@ -47,37 +47,39 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 				num_states = form.cleaned_data['num_states'],
 				selected_state = form.cleaned_data['selected_state'],				
 				)
+			except IntegrityError:  # db constraint User-Project_name
+				return redirect('ESTM', check='error')			
 
-				(interpreter, _) = Interpreter.objects.get_or_create(
-					name='bash',
-					path='/usr/bin/bash',
-					arguments='',
-		#            name='Python',
-		#            path=settings.PYTHON_PATH,
-		#            arguments=settings.PYTHON_ARGUMENTS,
-				)
-				(server, _) = Server.objects.get_or_create(
-					title='Example Server',
-					hostname=settings.SERVER_HOSTNAME,
-					port=settings.SERVER_PORT,
-				)
-				logger.debug("Running job in {} using {}".format(server, interpreter))
+			(interpreter, _) = Interpreter.objects.get_or_create(
+				name='bash',
+				path='/usr/bin/bash',
+				arguments='',
+	#            name='Python',
+	#            path=settings.PYTHON_PATH,
+	#            arguments=settings.PYTHON_ARGUMENTS,
+			)
+			(server, _) = Server.objects.get_or_create(
+				title='Example Server',
+				hostname=settings.SERVER_HOSTNAME,
+				port=settings.SERVER_PORT,
+			)
+			logger.debug("Running job in {} using {}".format(server, interpreter))
 
-	#			num_estm = len(ESTM_object.objects.all())
-	#			job_data = ESTM_object.objects.filter()[num_estm-1]
-	#			filepath = job_data.xyz_file.path
-	##			filename = job_data.xyz_file.name  # it gives xyzfiles/name
-	#			dirname, basename = os.path.split(filepath.rstrip('/'))
-	#			filename = basename
-	#			project_name = job_data.project_name
-	#			multiplicity = job_data.multiplicity
-	#			charge = job_data.charge
+#			num_estm = len(ESTM_object.objects.all())
+#			job_data = ESTM_object.objects.filter()[num_estm-1]
+#			filepath = job_data.xyz_file.path
+##			filename = job_data.xyz_file.name  # it gives xyzfiles/name
+#			dirname, basename = os.path.split(filepath.rstrip('/'))
+#			filename = basename
+#			project_name = job_data.project_name
+#			multiplicity = job_data.multiplicity
+#			charge = job_data.charge
 
-				filepath = estm.xyz_file.path
-				dirname, basename = os.path.split(filepath.rstrip('/'))
-				filename = basename
+			filepath = estm.xyz_file.path
+			dirname, basename = os.path.split(filepath.rstrip('/'))
+			filename = basename
 
-				program = textwrap.dedent('''\
+			program = textwrap.dedent('''\
 #!/bin/bash
 remote=%s
 filename=%s
@@ -99,39 +101,37 @@ while [ ! -f $filename ]; do
 	sleep 0.5
 done
 python vdw_surface.py
-		    	''') %(settings.REMOTE_DIRECTORY, filename, estm.project_name, estm.project_name, estm.charge, estm.multiplicity,
-		    	estm.basis_set, estm.num_states, estm.selected_state)
-				remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
-				(job, _) = Job.objects.get_or_create(
-					title=estm.project_name,
-					program=program,
-					remote_directory=remote_directory,
-					remote_filename=settings.REMOTE_FILENAME,
-					owner=request.user,
-					server=server,
-					interpreter=interpreter,
-					estm_data=estm
-				)
+	    	''') %(settings.REMOTE_DIRECTORY, filename, estm.project_name, estm.project_name, estm.charge, estm.multiplicity,
+	    	estm.basis_set, estm.num_states, estm.selected_state)
+			remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
+			(job, _) = Job.objects.get_or_create(
+				title=estm.project_name,
+				program=program,
+				remote_directory=remote_directory,
+				remote_filename=settings.REMOTE_FILENAME,
+				owner=request.user,
+				server=server,
+				interpreter=interpreter,
+				estm_data=estm
+			)
 
-				while not os.path.isfile(job.estm_data.xyz_file.path):
-					time.sleep(1)
-
-				copy_file_to_server.delay(
-					job_pk=job.pk,
-					password=settings.REMOTE_PASSWORD,
-					username=settings.REMOTE_USER,
-				)
+			while not os.path.isfile(job.estm_data.xyz_file.path):
 				time.sleep(1)
-				submit_job_to_server.delay(     #deley is used by celery to pass task to the queue
-					job_pk=job.pk,
-					password=settings.REMOTE_PASSWORD,
-					username=settings.REMOTE_USER,
-				)
-				#return render(request, 'test.html', {'test': newdoc}) # Usamos esto si queremos pasarle y ver los resultados en test.html
-				#return render(request, 'estm_job_status.html', {'newdoc': newdoc}) # Te redirecciona pero no hace las funciones del view
-				return redirect('method', method='ESTM')
-			except IntegrityError:  # db constraint User-Project_name
-				return redirect('ESTM', check='error')			
+
+			copy_file_to_server.delay(
+				job_pk=job.pk,
+				password=settings.REMOTE_PASSWORD,
+				username=settings.REMOTE_USER,
+			)
+			time.sleep(1)
+			submit_job_to_server.delay(     #deley is used by celery to pass task to the queue
+				job_pk=job.pk,
+				password=settings.REMOTE_PASSWORD,
+				username=settings.REMOTE_USER,
+			)
+			#return render(request, 'test.html', {'test': newdoc}) # Usamos esto si queremos pasarle y ver los resultados en test.html
+			#return render(request, 'estm_job_status.html', {'newdoc': newdoc}) # Te redirecciona pero no hace las funciones del view
+			return redirect('method', method='ESTM')
 		else:
 			return redirect('ESTM', check='error')
 #			return render(request, self.template_name, {'form': form})
