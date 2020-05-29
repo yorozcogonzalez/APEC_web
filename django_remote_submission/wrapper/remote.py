@@ -102,20 +102,25 @@ class RemoteWrapper(object):
             self._sftp.mkdir(remote_directory)  # sub-directory exists
             self._sftp.put(local_file, remote_file)
             return True
-        except IOError:
+        except:
+            pass
+        try:
             self._sftp.chdir(remote_directory) # Test if remote_path exists
             filesInRemote = self._sftp.listdir(path=remote_directory)
             for file in filesInRemote:
                 self._sftp.remove(remote_directory+file)
             self._sftp.put(local_file, remote_file)
             return True
-        else:
+        except:
+            pass
+        try:
             dirname, basename = os.path.split(remote_directory.rstrip('/'))
             self._sftp.mkdir(dirname)  # make parent directories 
             self._sftp.mkdir(remote_directory)  # sub-directory missing, so created it
             self._sftp.put(local_file, remote_file)
             return True
-
+        except:
+            pass
 
     def _mkdir_p(self, remote_directory):
         """Change to this directory, recursively making new folders if needed.

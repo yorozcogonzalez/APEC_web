@@ -356,11 +356,11 @@ def copy_file_to_server(job_pk, password=None, public_key_filename=None, usernam
         port=job.server.port,
     )
 
-
     with wrapper.connect(password, public_key_filename):
 #        copy_status = None
         remote_directory = job.remote_directory
         local_file = job.estm_data.xyz_file.path
+
         wrapper.copy_file(local_file, remote_directory)
 
         time.sleep(1)
@@ -375,16 +375,6 @@ def copy_file_to_server(job_pk, password=None, public_key_filename=None, usernam
             job=job,
         )
         log.save()
-    #    else:
-    #        log = Log(
-    #            time=timezone.now(),
-    #            content='File {} Un-successfully copied to {}.'.format(
-    #                local_file, remote_directory,
-    #            ),
-    #            stream='stderr',
-    #            job=job,
-    #        )
-    #        log.save()
 
     return { }
 
