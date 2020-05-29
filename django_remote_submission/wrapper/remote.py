@@ -101,7 +101,7 @@ class RemoteWrapper(object):
         try:
             self._sftp.mkdir(remote_directory)  # sub-directory exists
             self._sftp.put(local_file, remote_file)
-            return True
+            return
         except:
             pass
         try:
@@ -110,7 +110,7 @@ class RemoteWrapper(object):
             for file in filesInRemote:
                 self._sftp.remove(remote_directory+file)
             self._sftp.put(local_file, remote_file)
-            return True
+            return
         except:
             pass
         try:
@@ -118,7 +118,7 @@ class RemoteWrapper(object):
             self._sftp.mkdir(dirname)  # make parent directories 
             self._sftp.mkdir(remote_directory)  # sub-directory missing, so created it
             self._sftp.put(local_file, remote_file)
-            return True
+            return
         except:
             pass
 
