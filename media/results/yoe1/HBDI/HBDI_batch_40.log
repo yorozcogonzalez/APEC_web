@@ -1,0 +1,300 @@
+ Entering Gaussian System, Link 0=g03
+ Input=HBDI_batch_40.com
+ Output=HBDI_batch_40.log
+ Initial command:
+ /home/yoelvis/bin/g03/l1.exe /scratch/yoelvis/33721150/scr/Gau-10915.inp -scrdir=/scratch/yoelvis/33721150/scr/
+ Entering Link 1 = /home/yoelvis/bin/g03/l1.exe PID=     10916.
+  
+ Copyright (c) 1988,1990,1992,1993,1995,1998,2003,2004, Gaussian, Inc.
+                  All Rights Reserved.
+  
+ This is the Gaussian(R) 03 program.  It is based on the
+ the Gaussian(R) 98 system (copyright 1998, Gaussian, Inc.),
+ the Gaussian(R) 94 system (copyright 1995, Gaussian, Inc.),
+ the Gaussian 92(TM) system (copyright 1992, Gaussian, Inc.),
+ the Gaussian 90(TM) system (copyright 1990, Gaussian, Inc.),
+ the Gaussian 88(TM) system (copyright 1988, Gaussian, Inc.),
+ the Gaussian 86(TM) system (copyright 1986, Carnegie Mellon
+ University), and the Gaussian 82(TM) system (copyright 1983,
+ Carnegie Mellon University). Gaussian is a federally registered
+ trademark of Gaussian, Inc.
+  
+ This software contains proprietary and confidential information,
+ including trade secrets, belonging to Gaussian, Inc.
+  
+ This software is provided under written license and may be
+ used, copied, transmitted, or stored only in accord with that
+ written license.
+  
+ The following legend is applicable only to US Government
+ contracts under FAR:
+  
+                    RESTRICTED RIGHTS LEGEND
+  
+ Use, reproduction and disclosure by the US Government is
+ subject to restrictions as set forth in subparagraphs (a)
+ and (c) of the Commercial Computer Software - Restricted
+ Rights clause in FAR 52.227-19.
+  
+ Gaussian, Inc.
+ 340 Quinnipiac St., Bldg. 40, Wallingford CT 06492
+  
+  
+ ---------------------------------------------------------------
+ Warning -- This program may not be used in any manner that
+ competes with the business of Gaussian, Inc. or will provide
+ assistance to any competitor of Gaussian, Inc.  The licensee
+ of this program is prohibited from giving any competitor of
+ Gaussian, Inc. access to this program.  By using this program,
+ the user acknowledges that Gaussian, Inc. is engaged in the
+ business of creating and licensing software in the field of
+ computational chemistry and represents and warrants to the
+ licensee that it is not a competitor of Gaussian, Inc. and that
+ it will not use this program in any manner prohibited above.
+ ---------------------------------------------------------------
+  
+
+ Cite this work as:
+ Gaussian 03, Revision D.01,
+ M. J. Frisch, G. W. Trucks, H. B. Schlegel, G. E. Scuseria, 
+ M. A. Robb, J. R. Cheeseman, J. A. Montgomery, Jr., T. Vreven, 
+ K. N. Kudin, J. C. Burant, J. M. Millam, S. S. Iyengar, J. Tomasi, 
+ V. Barone, B. Mennucci, M. Cossi, G. Scalmani, N. Rega, 
+ G. A. Petersson, H. Nakatsuji, M. Hada, M. Ehara, K. Toyota, 
+ R. Fukuda, J. Hasegawa, M. Ishida, T. Nakajima, Y. Honda, O. Kitao, 
+ H. Nakai, M. Klene, X. Li, J. E. Knox, H. P. Hratchian, J. B. Cross, 
+ V. Bakken, C. Adamo, J. Jaramillo, R. Gomperts, R. E. Stratmann, 
+ O. Yazyev, A. J. Austin, R. Cammi, C. Pomelli, J. W. Ochterski, 
+ P. Y. Ayala, K. Morokuma, G. A. Voth, P. Salvador, J. J. Dannenberg, 
+ V. G. Zakrzewski, S. Dapprich, A. D. Daniels, M. C. Strain, 
+ O. Farkas, D. K. Malick, A. D. Rabuck, K. Raghavachari, 
+ J. B. Foresman, J. V. Ortiz, Q. Cui, A. G. Baboul, S. Clifford, 
+ J. Cioslowski, B. B. Stefanov, G. Liu, A. Liashenko, P. Piskorz, 
+ I. Komaromi, R. L. Martin, D. J. Fox, T. Keith, M. A. Al-Laham, 
+ C. Y. Peng, A. Nanayakkara, M. Challacombe, P. M. W. Gill, 
+ B. Johnson, W. Chen, M. W. Wong, C. Gonzalez, and J. A. Pople, 
+ Gaussian, Inc., Wallingford CT, 2004.
+ 
+ ******************************************
+ Gaussian 03:  AM64L-G03RevD.01 13-Oct-2005
+                29-May-2020 
+ ******************************************
+ %nproc=4
+ Will use up to    4 processors via shared memory.
+ %mem=20000MB
+ ------------------------------------------------------
+ #P b3lyp/STO-3G TD(NStates=6) SCFcyc=500 charge NoSymm
+ ------------------------------------------------------
+ 1/18=10,28=-2,38=1/1;
+ 2/15=1,17=6,18=5,40=1/2;
+ 3/6=3,11=2,16=1,25=1,30=1,43=1,74=-5/1,2,8,3,7;
+ 4//1;
+ 5/5=2,7=500,38=5/2;
+ 8/6=1,10=1/1;
+ 9/41=6,42=1/14;
+ 6/7=2,8=2,9=2,10=2/1;
+ 99/5=1,9=1/99;
+ Leave Link    1 at Fri May 29 11:45:52 2020, MaxMem= 2621440000 cpu:       0.2
+ (Enter /home/yoelvis/bin/g03/l101.exe)
+ -------------------------
+ Gaussian template charges
+ -------------------------
+ Symbolic Z-matrix:
+ Charge =  0 Multiplicity = 1
+ C                    -4.04187  -0.52513   0.13488 
+ C                    -4.23731   0.90908  -0.0314 
+ C                    -3.00592   1.68357  -0.14525 
+ C                    -1.76135   1.10889  -0.0996 
+ C                    -1.59009  -0.30713   0.06496 
+ C                    -2.79015  -1.08436   0.17857 
+ O                    -5.37882   1.43928  -0.07364 
+ C                    -0.34177  -0.96505   0.12039 
+ C                     0.96456  -0.49704   0.04148 
+ C                     2.12208  -1.37703   0.12484 
+ O                     2.25144  -2.60514   0.26791 
+ N                     3.2122   -0.48196  -0.00073 
+ C                     2.69453   0.80357  -0.14361 
+ N                     1.39271   0.82988  -0.12331 
+ C                     3.5648    2.0154   -0.30273 
+ C                     4.58907  -0.91451   0.02571 
+ H                    -4.93673  -1.13836   0.22358 
+ H                    -3.11846   2.75924  -0.27057 
+ H                    -0.86922   1.72141  -0.18817 
+ H                    -2.68776  -2.1634    0.30447 
+ H                    -0.3882   -2.04773   0.2494 
+ H                     4.62969   1.76128  -0.29179 
+ H                     3.37719   2.73411   0.50478 
+ H                     3.34567   2.52653  -1.24853 
+ H                     4.57027  -2.00098   0.15467 
+ H                     5.14294  -0.46703   0.86194 
+ H                     5.11105  -0.67692  -0.91097 
+ 
+                    Isotopes and Nuclear Properties:
+ (Nuclear quadrupole moments (NQMom) in fm**2, nuclear magnetic moments (NMagM)
+  in nuclear magnetons)
+
+  Atom         1           2           3           4           5           6           7           8           9          10
+ IAtWgt=          12          12          12          12          12          12          16          12          12          12
+ AtmWgt=  12.0000000  12.0000000  12.0000000  12.0000000  12.0000000  12.0000000  15.9949146  12.0000000  12.0000000  12.0000000
+ NucSpn=           0           0           0           0           0           0           0           0           0           0
+ AtZEff=   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NQMom=    0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NMagM=    0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+
+  Atom        11          12          13          14          15          16          17          18          19          20
+ IAtWgt=          16          14          12          14          12          12           1           1           1           1
+ AtmWgt=  15.9949146  14.0030740  12.0000000  14.0030740  12.0000000  12.0000000   1.0078250   1.0078250   1.0078250   1.0078250
+ NucSpn=           0           2           0           2           0           0           1           1           1           1
+ AtZEff=   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NQMom=    0.0000000   2.0440000   0.0000000   2.0440000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NMagM=    0.0000000   0.4037610   0.0000000   0.4037610   0.0000000   0.0000000   2.7928460   2.7928460   2.7928460   2.7928460
+
+  Atom        21          22          23          24          25          26          27
+ IAtWgt=           1           1           1           1           1           1           1
+ AtmWgt=   1.0078250   1.0078250   1.0078250   1.0078250   1.0078250   1.0078250   1.0078250
+ NucSpn=           1           1           1           1           1           1           1
+ AtZEff=   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NQMom=    0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NMagM=    2.7928460   2.7928460   2.7928460   2.7928460   2.7928460   2.7928460   2.7928460
+ Leave Link  101 at Fri May 29 11:46:02 2020, MaxMem= 2621440000 cpu:       0.1
+ (Enter /home/yoelvis/bin/g03/l202.exe)
+                          Input orientation:                          
+ ---------------------------------------------------------------------
+ Center     Atomic     Atomic              Coordinates (Angstroms)
+ Number     Number      Type              X           Y           Z
+ ---------------------------------------------------------------------
+    1          6             0       -4.041872   -0.525126    0.134878
+    2          6             0       -4.237312    0.909078   -0.031401
+    3          6             0       -3.005916    1.683573   -0.145249
+    4          6             0       -1.761354    1.108895   -0.099604
+    5          6             0       -1.590088   -0.307133    0.064959
+    6          6             0       -2.790153   -1.084358    0.178566
+    7          8             0       -5.378815    1.439276   -0.073635
+    8          6             0       -0.341773   -0.965051    0.120391
+    9          6             0        0.964558   -0.497037    0.041483
+   10          6             0        2.122082   -1.377028    0.124838
+   11          8             0        2.251439   -2.605141    0.267906
+   12          7             0        3.212196   -0.481958   -0.000733
+   13          6             0        2.694526    0.803569   -0.143611
+   14          7             0        1.392705    0.829876   -0.123309
+   15          6             0        3.564804    2.015397   -0.302731
+   16          6             0        4.589073   -0.914507    0.025710
+   17          1             0       -4.936731   -1.138355    0.223578
+   18          1             0       -3.118459    2.759239   -0.270573
+   19          1             0       -0.869220    1.721409   -0.188171
+   20          1             0       -2.687759   -2.163401    0.304472
+   21          1             0       -0.388201   -2.047730    0.249401
+   22          1             0        4.629691    1.761277   -0.291793
+   23          1             0        3.377193    2.734107    0.504776
+   24          1             0        3.345667    2.526531   -1.248526
+   25          1             0        4.570268   -2.000976    0.154672
+   26          1             0        5.142939   -0.467027    0.861936
+   27          1             0        5.111051   -0.676916   -0.910969
+ ---------------------------------------------------------------------
+                    Distance matrix (angstroms):
+                    1          2          3          4          5
+     1  C    0.000000
+     2  C    1.456979   0.000000
+     3  C    2.455611   1.459157   0.000000
+     4  C    2.815274   2.484944   1.371595   0.000000
+     5  C    2.462449   2.914833   2.451870   1.435809   0.000000
+     6  C    1.371659   2.472275   2.795148   2.438476   1.434274
+     7  O    2.385324   1.259334   2.386516   3.632609   4.174159
+     8  C    3.726188   4.325578   3.766090   2.522867   1.412168
+     9  C    5.007380   5.389056   4.533717   3.166942   2.561802
+    10  C    6.222553   6.759629   5.978009   4.616412   3.863737
+    11  O    6.629474   7.385337   6.797319   5.480113   4.481000
+    12  N    7.255464   7.578330   6.585995   5.222718   4.805914
+    13  C    6.871830   6.933549   5.767967   4.466545   4.431149
+    14  N    5.606899   5.631324   4.480753   3.166465   3.197700
+    15  C    8.031642   7.884832   6.580978   5.406567   5.665885
+    16  C    8.640414   9.012979   8.028892   6.666167   6.209064
+    17  H    1.088435   2.178574   3.439093   3.903537   3.451972
+    18  H    3.435715   2.175346   1.088774   2.143502   3.442548
+    19  H    3.900897   3.468213   2.137462   1.085781   2.167650
+    20  H    2.132212   3.457463   3.886217   3.424825   2.169788
+    21  H    3.959893   4.861812   4.575019   3.460005   2.123259
+    22  H    8.978067   8.911666   7.637408   6.427130   6.564392
+    23  H    8.111840   7.848497   6.501556   5.423214   5.840930
+    24  H    8.111852   7.848511   6.501569   5.423226   5.840939
+    25  H    8.737705   9.277742   8.429971   7.058710   6.389612
+    26  H    9.213726   9.522648   8.487835   7.146842   6.781916
+    27  H    9.213731   9.522652   8.487838   7.146844   6.781920
+                    6          7          8          9         10
+     6  C    0.000000
+     7  O    3.624018   0.000000
+     8  C    2.451975   5.584821   0.000000
+     9  C    3.802840   6.633321   1.389879   0.000000
+    10  C    4.921239   8.014638   2.498065   1.456432   0.000000
+    11  O    5.266727   8.642612   3.071873   2.480208   1.243167
+    12  N    6.035166   8.803518   3.588697   2.248085   1.416074
+    13  C    5.809455   8.098633   3.523752   2.172240   2.270410
+    14  N    4.609959   6.799068   2.507901   1.403982   2.337519
+    15  C    7.087003   8.965083   4.931881   3.632091   3.711174
+    16  C    7.382763  10.242507   4.932014   3.648512   2.511931
+    17  H    2.147729   2.632101   4.599383   5.938826   7.063537
+    18  H    3.883651   2.624937   4.661885   5.231801   6.687924
+    19  H    3.420060   4.519863   2.755082   2.887384   4.318122
+    20  H    1.091179   4.512652   2.640753   4.023102   4.877009
+    21  H    2.588914   6.096703   1.091326   2.068293   2.601322
+    22  H    7.960714  10.016061   5.684911   4.317899   4.038644
+    23  H    7.261077   8.870108   5.259490   4.059032   4.315216
+    24  H    7.261088   8.870123   5.259495   4.059035   4.315213
+    25  H    7.417315  10.529564   5.020205   3.908425   2.526621
+    26  H    7.986366  10.733899   5.556976   4.258276   3.239906
+    27  H    7.986371  10.733904   5.556979   4.258277   3.239906
+                   11         12         13         14         15
+    11  O    0.000000
+    12  N    2.345874   0.000000
+    13  C    3.461932   1.393189   0.000000
+    14  N    3.562277   2.246437   1.302245   0.000000
+    15  C    4.837347   2.540141   1.500410   2.481062   0.000000
+    16  C    2.895071   1.443464   2.563155   3.644427   3.121112
+    17  H    7.336431   8.178397   7.883018   6.637471   9.082910
+    18  H    7.609359   7.117258   6.134457   4.908638   6.724607
+    19  H    5.354022   4.641973   3.680313   2.432148   4.445236
+    20  H    4.959047   6.142464   6.162198   5.078670   7.544905
+    21  H    2.697916   3.934090   4.217531   3.404579   5.695621
+    22  H    5.003494   2.669478   2.164261   3.372532   1.094843
+    23  H    5.461776   3.259730   2.147887   2.821131   1.097183
+    24  H    5.461772   3.259725   2.147887   2.821137   1.097181
+    25  H    2.398918   2.043508   3.387160   4.264728   4.165504
+    26  H    3.644883   2.114755   2.936029   4.088633   3.163762
+    27  H    3.644884   2.114755   2.936029   4.088634   3.163761
+                   16         17         18         19         20
+    16  C    0.000000
+    17  H    9.530488   0.000000
+    18  H    8.543433   4.329150   0.000000
+    19  H    6.065209   4.989232   2.478499   0.000000
+    20  H    7.388486   2.472881   4.974793   4.317584   0.000000
+    21  H    5.109549   4.638616   5.552624   3.824821   2.303124
+    22  H    2.694861  10.009491   7.812183   5.500032   8.324885
+    23  H    3.874344   9.175858   6.541811   4.420153   7.798035
+    24  H    3.874336   9.175870   6.541825   4.420164   7.798044
+    25  H    1.094258   9.546303   9.053011   6.600130   7.261390
+    26  H    1.098308  10.122150   8.941033   6.483674   8.031705
+    27  H    1.098307  10.122156   8.941035   6.483675   8.031710
+                   21         22         23         24         25
+    21  H    0.000000
+    22  H    6.323027   0.000000
+    23  H    6.091746   1.774731   0.000000
+    24  H    6.091750   1.774731   1.765828   0.000000
+    25  H    4.959594   3.789117   4.895611   4.895603   0.000000
+    26  H    5.785096   2.561221   3.673239   4.079905   1.783585
+    27  H    5.785098   2.561225   4.079911   3.673227   1.783584
+                   26         27
+    26  H    0.000000
+    27  H    1.785571   0.000000
+ Symmetry turned off by external request.
+ Stoichiometry    C12H11N2O2
+ Framework group  C1[X(C12H11N2O2)]
+ Deg. of freedom    75
+ Full point group                 C1
+ Rotational constants (GHZ):      1.4384849      0.2347553      0.2023327
+ Leave Link  202 at Fri May 29 11:46:14 2020, MaxMem= 2621440000 cpu:       0.1
+ (Enter /home/yoelvis/bin/g03/l301.exe)
+ Standard basis: STO-3G (5D, 7F)
+ The combination of multiplicity 1 and   113 electrons is impossible.
+ Error termination via Lnk1e in /home/yoelvis/bin/g03/l301.exe at Fri May 29 11:46:25 2020.
+ Job cpu time:  0 days  0 hours  0 minutes 33.8 seconds.
+ File lengths (MBytes):  RWF=     14 Int=      0 D2E=      0 Chk=      1 Scr=      1

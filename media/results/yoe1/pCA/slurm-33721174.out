@@ -1,0 +1,2 @@
+/var/spool/slurmd/job33721174/slurm_script: line 8: comet-11-03: No such file or directory
+rm: cannot remove ‘/scratch/yoelvis/33721174’: Permission denied
