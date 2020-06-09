@@ -1,2 +1,0 @@
-/var/spool/slurmd/job33721089/slurm_script: line 8: comet-10-18: No such file or directory
-slurmstepd: *** JOB 33721089 ON comet-10-18 CANCELLED AT 2020-05-29T12:04:12 ***

@@ -118,16 +118,17 @@ python vdw_surface.py
 			while not os.path.isfile(job.estm_data.xyz_file.path):
 				time.sleep(1)
 
-			copy_file_to_server.delay(
-				job_pk=job.pk,
-				password=settings.REMOTE_PASSWORD,
-				username=settings.REMOTE_USER,
-			)
-			time.sleep(1)
+#			copy_file_to_server.delay(
+#				job_pk=job.pk,
+#				password=settings.REMOTE_PASSWORD,
+#				username=settings.REMOTE_USER,
+#			)
+#			time.sleep(3)
 			submit_job_to_server.delay(     #deley is used by celery to pass task to the queue
 				job_pk=job.pk,
 				password=settings.REMOTE_PASSWORD,
 				username=settings.REMOTE_USER,
+				copy_file=job.estm_data.xyz_file.path,
 			)
 			#return render(request, 'test.html', {'test': newdoc}) # Usamos esto si queremos pasarle y ver los resultados en test.html
 			#return render(request, 'estm_job_status.html', {'newdoc': newdoc}) # Te redirecciona pero no hace las funciones del view

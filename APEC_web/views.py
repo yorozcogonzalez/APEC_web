@@ -113,6 +113,9 @@ class mol3dESTMView(LoginRequiredMixin, TemplateView):
         context['lim'] = limit
         return context
 
+class Inprogress(LoginRequiredMixin, TemplateView):
+    template_name = "In_progress.html"
+
 
 
     

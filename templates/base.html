@@ -61,9 +61,9 @@
             <ul class="nav navbar-nav">
               {% if user.is_authenticated %}
                 <li><a href="{% url 'index' %}">Index</a></li>
-                <li><a href="{% url 'method' 'APEC' %}">APEC Job</a></li>
+                <li><a href="{% url 'inprogress' %}">APEC Job</a></li>
                 <li><a href="{% url 'method' 'ESTM' %}">ESTM Job</a></li>
-                <li><a href="{% url 'method' 'FEG' %}">FEG Job</a></li>
+                <li><a href="{% url 'inprogress' %}">FEG Job</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">API <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -76,7 +76,7 @@
 
             <ul class="nav navbar-nav navbar-right">
               {% if user.is_authenticated %}
-                <li><a href="{% url 'home' %}">Tutorial</a></li>
+                <li><a href="{% url 'inprogress' %}">Tutorial</a></li>
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
                 <li><a href="{% url 'account_logout' %}">Logout</a></li>
               {% else %}

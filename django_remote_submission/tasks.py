@@ -222,7 +222,7 @@ class LogContainer(object):
 @shared_task
 def submit_job_to_server(job_pk, password=None, public_key_filename=None, username=None,
                          timeout=None, log_policy=LogPolicy.LOG_LIVE,
-                         store_results=None, remote=True):
+                         store_results=None, remote=True, copy_file=None):
     """Submit a job to the remote server.
 
     This can be used as a Celery task, if the library is installed and running.
@@ -260,6 +260,24 @@ def submit_job_to_server(job_pk, password=None, public_key_filename=None, userna
     )
 
     with wrapper.connect(password, public_key_filename):
+
+        if copy_file is not None:
+
+            wrapper.copy_file(copy_file, job.remote_directory)
+
+#        time.sleep(1)
+
+            log = Log(
+                time=timezone.now(),
+                content='File {} successfully copied to {}.'.format(
+                    copy_file, job.remote_directory,
+                ),
+                stream='stdout',
+                job=job,
+            )
+            log.save()
+
+
         wrapper.chdir(job.remote_directory)
 
         # Copying the propgarm to the remote server

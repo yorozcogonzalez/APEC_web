@@ -99,13 +99,15 @@ class RemoteWrapper(object):
         dirname, basename = os.path.split(local_file.rstrip('/'))
         remote_file = remote_directory + basename
         try:
-            self._sftp.mkdir(remote_directory)  # sub-directory exists
+            # username folder exists
+            self._sftp.mkdir(remote_directory)
             self._sftp.put(local_file, remote_file)
             return
         except:
             pass
         try:
-            self._sftp.chdir(remote_directory) # Test if remote_path exists
+            # username and project folders exist
+            self._sftp.chdir(remote_directory)
             filesInRemote = self._sftp.listdir(path=remote_directory)
             for file in filesInRemote:
                 self._sftp.remove(remote_directory+file)
@@ -114,6 +116,7 @@ class RemoteWrapper(object):
         except:
             pass
         try:
+            # Neither username nor project folder exist
             dirname, basename = os.path.split(remote_directory.rstrip('/'))
             self._sftp.mkdir(dirname)  # make parent directories 
             self._sftp.mkdir(remote_directory)  # sub-directory missing, so created it

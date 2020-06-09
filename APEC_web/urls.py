@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^3dmolESTM/(?P<job_pk>[0-9]+)/$', views.mol3dESTMView.as_view(), name='mol3d_estm'),
     url(r'^ESTM_calc/(?P<job_pk>[0-9]+)/$', estmviews.ESTM_Calculation.as_view(), name='ESTM_calc'),
     url(r'^delete/(?P<job_pk>[0-9]+)/$', estmviews.DeleteJobView.as_view(), name='delete'),
+    url(r'^inprogress/$', views.Inprogress.as_view(), name='inprogress'),
 
    # Login Yoe
     path('admin/', admin.site.urls),
