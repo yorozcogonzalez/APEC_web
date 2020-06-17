@@ -12,17 +12,17 @@ import os
 
 class ArchiveView(LoginRequiredMixin, TemplateView):
 	template_name = "archive_ESTM.html"
-	try:
-		numESTM = ESTM_archive.objects.count()
-		if numESTM > 0:
-			def get_context_data(self, **kwargs):
+
+	def get(self, request, **kwargs):
+		try:
+			numESTM = ESTM_archive.objects.count()
+			if numESTM > 0:
 				user = self.request.user
 				archivo = ESTM_archive.objects.filter(owner=user)
-				context = super(ArchiveView, self).get_context_data(**kwargs)
-				context['archivo'] = archivo
-				return context
-	except:
-		pass
+			return render(request, self.template_name, {'archivo': archivo})		
+		except:
+			return render(request, self.template_name)
+
 
 class UploadMOL2View(LoginRequiredMixin, TemplateView):
 	template_name = "upload_mol2.html"

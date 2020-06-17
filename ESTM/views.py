@@ -413,9 +413,12 @@ class ArchiveJobView(LoginRequiredMixin, TemplateView):
 				dst_file = os.path.join(dst_folder, file_name)
 				shutil.copy(full_file_name, dst_file)
 
+		mol2_file = 'archive/' + str(request.user.username) + '/' + job_data.estm_data.project_name + '/' + job_data.estm_data.project_name + '.mol2'
+		xyz_file = 'archive/' + str(request.user.username) + '/' + job_data.estm_data.project_name + '/' + job_data.estm_data.project_name + '.xyz'
+
 		ESTM_archive.objects.create(
-			mol2_file = 'archive/' + str(request.user.username) + '/' + job_data.estm_data.project_name + '/rPSB.mol2',
-			xyz_file = 'archive/' + str(request.user.username) + '/' + job_data.estm_data.project_name + '/rPSB.xyz',
+			mol2_file = mol2_file,
+			xyz_file = xyz_file,
 			owner = job_data.owner,
 			project_name = job_data.estm_data.project_name,
 			charge = job_data.estm_data.charge,
