@@ -6,7 +6,7 @@
   <h1>Log for Job #{{job_pk}}</h1>
 
   <a id="vdw_bot" class="btn btn-warning" href="{% url 'mol3d_surf' job_pk %}">View vdW surface</a>
-  <a id="estm_bot" class="btn btn-warning" href="{% url 'mol3d_estm' job_pk %}">View ESTM surface</a>
+  <a id="estm_bot" class="btn btn-warning" href="{% url 'mol3d_estm' 'job' job_pk %}">View ESTM surface</a>
   <table class="table table-striped">
     <thead>
       <th style="width:5%">Log ID</th>

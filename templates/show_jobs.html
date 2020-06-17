@@ -12,7 +12,8 @@
       <th>ESTM Map</th>
       <th>Modified</th>
       <th>See log...</th>
-      <th>Delete</th>
+      <th>Archive</th>
+      <th></th>
     </thead>
     <tbody id="job-status-rows"></tbody>
   </table>
@@ -34,9 +35,16 @@ socket.onmessage = function(e) {
       if (state === "prep") {
         var vdw = '<span class="label label-' + status + '">' + status + '</span>';
         var estm = '<span class="label label-' + "initial" + '">' + "pending" + '</span>';
+        var arch = '<span class="glyphicon glyphicon-floppy-remove"</span>'
       } else {
         var vdw = '<span class="label label-' + "success" + '">' + "success" + '</span>';
         var estm = '<span class="label label-' + status + '">' + status + '</span>';
+        if (status === "success") {
+          var arch = '<a href="' + "{% url 'archiveJob' 999 %}".replace (999, job_id) +
+                   '" title="Click to archive the ESTM." class="confirm-archive"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> ' + '</a>'
+        } else {
+          var arch = '<span class="glyphicon glyphicon-floppy-remove"</span>'  
+        }
       };
 
       tr = $('<tr>').append(
@@ -55,7 +63,9 @@ socket.onmessage = function(e) {
                    title + '</a>'
         )
       ).append(
-        $('<td>').append('<a href="' + "{% url 'delete' 999 %}".replace (999, job_id) +'" title="Click to delete this Job" class="confirm-delete" ><span class="glyphicon glyphicon-trash" aria-hidden="true"</span></a>'
+        $('<td>').append(arch)
+      ).append(
+        $('<td>').append('<a href="' + "{% url 'delete' 999 %}".replace (999, job_id) +'" title="Click to delete this Job" class="confirm-delete" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'
         )
       );
       found = false;
@@ -95,6 +105,9 @@ $(document).on('click', '.confirm-delete', function(){
     return confirm('Are you sure you want to delete this Job? You will lost the ESTM map. \n It can take a few seconds if jobs need to be canceled.');
 })
 
+$(document).on('click', '.confirm-archive', function(){
+    return confirm('The Job will be saved in the ARCHIVE tab.');
+})
 </script>
 
 

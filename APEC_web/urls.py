@@ -22,6 +22,8 @@ from django.urls import path, include
 
 from APEC_web import views
 from ESTM import views as estmviews
+from archive_ESTM import views as archiveviews
+
 
 urlpatterns = [
 #    url(r'^admin/', admin.site.urls),
@@ -37,10 +39,15 @@ urlpatterns = [
     url(r'^estmform/(?P<check>\w+)/$', estmviews.ESTM_View.as_view(), name='APEC'),
     url(r'^estmform/(?P<check>\w+)/$', estmviews.ESTM_View.as_view(), name='FEG'),
     url(r'^3dmolSurf/(?P<job_pk>[0-9]+)/$', views.mol3dSurfView.as_view(), name='mol3d_surf'),
-    url(r'^3dmolESTM/(?P<job_pk>[0-9]+)/$', views.mol3dESTMView.as_view(), name='mol3d_estm'),
+    url(r'^3dmolESTM/(?P<fromm>\w+)/(?P<job_pk>[0-9]+)/$', views.mol3dESTMView.as_view(), name='mol3d_estm'),
     url(r'^ESTM_calc/(?P<job_pk>[0-9]+)/$', estmviews.ESTM_Calculation.as_view(), name='ESTM_calc'),
     url(r'^delete/(?P<job_pk>[0-9]+)/$', estmviews.DeleteJobView.as_view(), name='delete'),
+    url(r'^archiveJob/(?P<job_pk>[0-9]+)/$', estmviews.ArchiveJobView.as_view(), name='archiveJob'),
+    url(r'^delete_archive/(?P<job_pk>[0-9]+)/$', archiveviews.DeleteArchive.as_view(), name='delete_archive'),
     url(r'^inprogress/$', views.Inprogress.as_view(), name='inprogress'),
+    url(r'^archive/$', archiveviews.ArchiveView.as_view(), name='archive'),
+    url(r'^uploadmol2/(?P<check>\w+)/$', archiveviews.UploadMOL2View.as_view(), name='uploadmol2'),
+
 
    # Login Yoe
     path('admin/', admin.site.urls),

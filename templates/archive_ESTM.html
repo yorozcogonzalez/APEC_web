@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="color:gray">ESTM Archive</h1>
+<h4 style="color:gray"> Visualive archived ESTM maps or Upload a new one (mol2 format) </h4>
+<div class="pull-right">
+	<a class="btn btn-primary" class="pull-right" href="{% url 'uploadmol2' 'ok' %}">UPLOAD ESTM mol2 file</a>	
+</div>
+
+<style>
+table {
+    table-layout: fixed;
+}
+</style>
+
+<div class="container">  <!-- contenedor con ancho fijo, auque se puede contraer o expandir -->
+   <table class="table">
+    <thead>
+    	<th scope="col">#</th>
+		<th>Project name</th>
+		<th>Charge</th>
+		<th>Moltiplicity</th>
+		<th>Basis Set</th>
+		<th>Electronic State</th>
+		<th></th>
+		<th></th>
+    </thead>
+    <tbody id="job-status-rows">
+    	{% for i in archivo %}
+		    <tr>
+		      <th scope="row">{{ forloop.counter }}</th>
+		      <td>{{ i.project_name }}</td>
+		      <td>{{ i.charge }}</td>
+		      <td>{{ i.multiplicity }}</td>
+		      <td>{{ i.basis_set }}</td>
+		      <td>{{ i.selected_state }}</td>
+		      <td><a href="{% url 'mol3d_estm' 'archive' i.pk %}" title="View ESTM"> <span class="glyphicon glyphicon-folder-open"></span></a></td>
+		      <td><a href="{% url 'delete_archive' i.pk %}" title="Delete ESTM" class="confirm-delete"> <span class="glyphicon glyphicon-trash"> </span> </a></td>
+
+		    </tr>
+		{% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+$(document).on('click', '.confirm-delete', function(){
+    return confirm('Are you sure you want to delete this Job? You will lost the ESTM map.');
+})
+</script>
+
+
+{% endblock %}

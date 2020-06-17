@@ -43,11 +43,27 @@
     .label-failure[href]:focus {
       background-color: #c9302c;
     }
+    /* styles para 3DMOL */
+    .mol-container {  
+    width: 60%;
+    height: 500px;
+    position: relative;
+    left: 20%;
+    }
+    .slidecontainer {
+    width: 25%; /* Width of the outside container */
+    }
+    .slidecontainer:hover {
+    opacity: 1.0
+    }
   </style>
+
+<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default"> 
         <div class="container-fluid">  <!-- contenedor que abarca todo el ancho de la pagina -->
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
@@ -76,6 +92,7 @@
 
             <ul class="nav navbar-nav navbar-right">
               {% if user.is_authenticated %}
+                <li><a href="{% url 'archive' %}">ARCHIVE</a></li>
                 <li><a href="{% url 'inprogress' %}">Tutorial</a></li>
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
                 <li><a href="{% url 'account_logout' %}">Logout</a></li>

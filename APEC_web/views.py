@@ -9,6 +9,7 @@ from django.shortcuts import render
 
 from django.conf import settings
 from ESTM.models import ESTM_object
+from archive_ESTM.models import ESTM_archive
 
 import os
 
@@ -100,11 +101,16 @@ class mol3dESTMView(LoginRequiredMixin, TemplateView):
 #    url = '/media/results/' + job_data.estm_data.project_name + '/pointsXx.xyz'
     def get_context_data(self, **kwargs):
         context = super(mol3dESTMView, self).get_context_data(**kwargs)
-        job_data = Job.objects.get(pk=int(kwargs['job_pk']))
-        project_name = job_data.estm_data.project_name
-        urlmol2 = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + project_name + '/' + project_name + '.mol2'
-        urlxyz = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + project_name + '/' + project_name + '.xyz'
-
+        fromm = kwargs['fromm']
+        if fromm == 'job':
+            job_data = Job.objects.get(pk=int(kwargs['job_pk']))
+            project_name = job_data.estm_data.project_name
+            urlmol2 = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + project_name + '/' + project_name + '.mol2'
+            urlxyz = settings.MEDIA_URL + 'results/' + job_data.owner.username + '/' + project_name + '/' + project_name + '.xyz'
+        elif fromm == 'archive':
+            archive_data = ESTM_archive.objects.get(pk=int(kwargs['job_pk']))
+            urlmol2 = archive_data.mol2_file.url
+            urlxyz = archive_data.xyz_file.url
         limit = 1.0
 
         context['urlmol2'] = urlmol2
@@ -115,6 +121,7 @@ class mol3dESTMView(LoginRequiredMixin, TemplateView):
 
 class Inprogress(LoginRequiredMixin, TemplateView):
     template_name = "In_progress.html"
+
 
 
 

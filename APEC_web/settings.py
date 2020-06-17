@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ESTM.apps.EstmConfig',
+    'archive_ESTM.apps.ArchiveEstmConfig',
 
     #login
     'django.contrib.sites',
@@ -106,8 +107,9 @@ DATABASES = {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'apec_web',
-        'USER': 'postgres',
+        'NAME': 'apec_web2',
+        'USER': 'yoelvis',
+        'PASSWORD': 'Camaron8!',
         'HOST': 'localhost',
         'PORT': 5432,
     }

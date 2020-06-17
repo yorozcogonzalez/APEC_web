@@ -7,35 +7,14 @@
 <!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
 <div style="height: 600px; width: 600px; position: relative;" class='viewer_3Dmoljs' data-href={{url}} data-type='mol2' data-backgroundcolor='0xffffff' data-style='sphere:colorscheme=charge'></div> -->
 
-<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
 <div id="container-01" class="mol-container"></div>
-<style>
-.mol-container {
-  width: 60%;
-  height: 500px;
-  position: relative;
-  left: 20%;
-}
-</style>
 
 <div class="slidecontainer">
   <input type="range" min="0" max="1" step="0.05" value="0.7" class="slider" id="myRange">
 </div>
-
-<style>
-.slidecontainer {
-  width: 25%; /* Width of the outside container */
-}
-.slidecontainer:hover {
-  opacity: 1.0
-}
-
-</style>
-
 <p> Opacity: <span id="demo"></span></p>
+
 <script>
-
-
 var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
 output.innerHTML = slider.value; // Display the default slider value
@@ -77,5 +56,6 @@ slider.onchange = function() {
 };
 </script>
 
- <!-- <p>{{ urlmol2 }}</p> -->
+ {{ urlmol2 }}
+ {{ urlxyz }}
 {% endblock %}

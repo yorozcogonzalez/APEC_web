@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 
 from .forms import ESTMForm
 from .models import ESTM_object
-from django_remote_submission.models import Interpreter, Server, Job, Log
+from archive_ESTM.models import ESTM_archive
+from django_remote_submission.models import Interpreter, Server, Job, Log, Result
 from django_remote_submission.tasks import submit_job_to_server, copy_file_to_server, delete_jobs_from_server
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -13,6 +14,8 @@ from django.views.generic import TemplateView
 from django.conf import settings
 import os
 import shutil
+from pathlib import Path
+from django.core.files import File
 
 import textwrap
 import logging
@@ -37,18 +40,21 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST, request.FILES)
 		if form.is_valid():
-			try:
-				estm = ESTM_object.objects.create(xyz_file = request.FILES['xyz_file'],
-				owner = request.user,
-				project_name = form.cleaned_data['project_name'],
-				charge = form.cleaned_data['charge'],
-				multiplicity = form.cleaned_data['multiplicity'],
-				basis_set = form.cleaned_data['basis_set'],
-				num_states = form.cleaned_data['num_states'],
-				selected_state = form.cleaned_data['selected_state'],				
-				)
-			except IntegrityError:  # db constraint User-Project_name
-				return redirect('ESTM', check='error')			
+			if ESTM_archive.objects.filter(project_name=form.cleaned_data['project_name'], owner=request.user).exists():
+				return redirect('ESTM', check='error')
+			else:	
+				try:
+					estm = ESTM_object.objects.create(xyz_file = request.FILES['xyz_file'],
+					owner = request.user,
+					project_name = form.cleaned_data['project_name'],
+					charge = form.cleaned_data['charge'],
+					multiplicity = form.cleaned_data['multiplicity'],
+					basis_set = form.cleaned_data['basis_set'],
+					num_states = form.cleaned_data['num_states'],
+					selected_state = form.cleaned_data['selected_state'],				
+					)
+				except IntegrityError:  # db constraint User-Project_name
+					return redirect('ESTM', check='error')			
 
 			(interpreter, _) = Interpreter.objects.get_or_create(
 				name='bash',
@@ -378,6 +384,61 @@ exit 0
 			time.sleep(1)
 
 		return redirect('method', method='ESTM')
-	
+##
+## To pass finished jobs from the execution section to archive 
+##	
+class ArchiveJobView(LoginRequiredMixin, TemplateView):
+	template_name = "archive_ESTM.html"
+
+	def get(self, request, **kwargs):
+		pk = kwargs['job_pk']
+		job_data = Job.objects.get(pk=pk)
+	   #
+	   #  It gives the path of any file in results
+	   #
+		path = Result.objects.filter(job=pk)[0].local_file.path
+		dirname, basename = os.path.split(path.rstrip('/'))
+		src = dirname
+
+		dst_folder = settings.MEDIA_ROOT + "archive/" + str(request.user.username) + "/" + job_data.estm_data.project_name
+	   #
+	   # Create parent directories if they do not excist
+	   #
+		Path(dst_folder).mkdir(parents=True, exist_ok=True)
+
+		src_files = os.listdir(src)
+		for file_name in src_files:
+			full_file_name = os.path.join(src, file_name)
+			if os.path.isfile(full_file_name):
+				dst_file = os.path.join(dst_folder, file_name)
+				shutil.copy(full_file_name, dst_file)
+
+		ESTM_archive.objects.create(
+			mol2_file = 'archive/' + str(request.user.username) + '/' + job_data.estm_data.project_name + '/rPSB.mol2',
+			xyz_file = 'archive/' + str(request.user.username) + '/' + job_data.estm_data.project_name + '/rPSB.xyz',
+			owner = job_data.owner,
+			project_name = job_data.estm_data.project_name,
+			charge = job_data.estm_data.charge,
+			multiplicity = job_data.estm_data.multiplicity,
+			basis_set = job_data.estm_data.basis_set,
+			num_states = job_data.estm_data.num_states,
+			selected_state = job_data.estm_data.selected_state,
+			)
+	   #
+	   # Deleting the ESTM object, which also deletes the corresponding Job
+	   # Removing the results/user/project_name folder
+	   #	
+		ESTM_object.objects.get(project_name=job_data.estm_data.project_name).delete()
+		shutil.rmtree(src)
+		Result.objects.filter(job=pk).delete()
+		os.remove(job_data.estm_data.xyz_file.path)
+		time.sleep(1)
+		try:
+			f.close()
+			g.close()
+		except:
+			pass
+		return redirect('archive')
+
 
 
