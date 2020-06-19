@@ -3,18 +3,144 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  <h4 style="color:gray; text-align:right"> Hi {{ user.email }}! </h4>
+{# {% if user.is_authenticated %} #}
+
+{% load static %}
+<!--  <h4 style="color:gray; text-align:right"> Hi {{ user.email }}! </h4> -->
+<style>
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+/*
+  Bootstrap Carousel Fade Transition (for Bootstrap 3.3.x)
+  CSS from:       http://codepen.io/transportedman/pen/NPWRGq
+  and:            http://stackoverflow.com/questions/18548731/bootstrap-3-carousel-fading-to-new-slide-instead-of-sliding-to-new-slide
+  Inspired from:  http://codepen.io/Rowno/pen/Afykb 
+*/
+.carousel-fade .carousel-inner .item {
+  opacity: 0;
+  transition-property: opacity;
+}
+.carousel-fade .carousel-inner .active {
+  opacity: 1;
+}
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
+}
+.carousel-indicators li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 10px;
+    text-indent: 0;
+    cursor: pointer;
+    border: 2px solid #A9A9A9;
+    border-radius: 50%;
+    background-color: transparent;   
+}
+.carousel-indicators .active {
+    width: 10px;
+    height: 10px;
+    margin: 10px;
+    background-color: #A9A9A9;
+}
+
+.imagen {
+  border: 1px solid #ddd;
+  border-radius: 0px;
+  padding-bottom: 55px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height:500px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+
+    </div> 
+
+    <div class="col-md-6"> 
+              <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                  <li data-target="#myCarousel" data-slide-to="1"></li>
+                  <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                  <div class="item active">
+                    <center>
+                      <img src="{% static "caroucel/ESTM_cover.jpg" %}" alt="something" class="imagen">
+                    </center>
+                    <br>
+                  </div>
+
+                  <div class="item">
+                    <center>
+                      <img src="{% static "caroucel/APEC.jpg" %}" alt="something" class="imagen">
+                    </center>
+                    <br>
+                  </div>
+                
+                  <div class="item">
+                    <center>
+                      <img src="{% static "caroucel/Lab.jpg" %}" alt="something" class="imagen">
+                    </center>
+                    <br>
+                  </div>
+                </div>
+  
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+
+
+              </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+    </div> 
+
+
+  </div>
+</div>
+
+</body>
+</html>
 
 
 
-
-{% else %}
+{# {% else %} #}
 
  <!-- <h3 style="color:gray;">This is a web page to simulate diferent properties of mulecular systems, Including:</h3>
   <h4 style="color:gray;">- ESTM (Electrostatic Tuning Maps)</h4>
   <h4 style="color:gray;">- APEC (Average Protein Electrostatic Configurations)</h4>
   <h4 style="color:gray;">- FEG (Free energy geometry optimizations in solusion</p> -->
 
-{% endif %}
+{# {% endif %} #}
 {% endblock %}

@@ -66,7 +66,11 @@ INSTALLED_APPS = [
     'allauth.account', # new
     'allauth.socialaccount', # new
 
+    'crispy_forms',
+
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -180,6 +184,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 # Folder where uploaded files go
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# When DEBUG = True and you have included django.core.staticfiles in your INSTALLED_APPS, 
+# Django will serve the files located in the STATICFILES_DIRS tuple using the STATIC_URL 
+# path as the starting point.
+# In production this responsibility should be given to Nginx, Apache, CloudFront, etc. 
+# When DEBUG = False, Django will not automatically serve any static files. 
+# When you run:
+# python manage.py collectstatic
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')] # if your static files folder is named "staticfiles"
 
 # Celery configuration
 

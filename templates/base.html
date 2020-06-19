@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
     crossorigin="anonymous">
@@ -56,14 +57,28 @@
     .slidecontainer:hover {
     opacity: 1.0
     }
-  </style>
+    .navbar{
+    top:-15px;
+    margin-left: -15px;
+    margin-right: -15px;
+    }
+    footer{
+      background: #535252;
+      padding: 20px;
+      position: absolute; 
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+</style>
 
 <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
 
 </head>
 
 <body>
-    <nav class="navbar navbar-default"> 
+    <nav class="navbar navbar-inverse"> 
+<!--    <nav class="navbar navbar-inverse"> -->
         <div class="container-fluid">  <!-- contenedor que abarca todo el ancho de la pagina -->
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
@@ -77,8 +92,8 @@
             <ul class="nav navbar-nav">
               {% if user.is_authenticated %}
                 <li><a href="{% url 'index' %}">Index</a></li>
-                <li><a href="{% url 'inprogress' %}">APEC Job</a></li>
                 <li><a href="{% url 'method' 'ESTM' %}">ESTM Job</a></li>
+                <li><a href="{% url 'inprogress' %}">APEC Job</a></li>
                 <li><a href="{% url 'inprogress' %}">FEG Job</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">API <span class="caret"></span></a>
@@ -103,10 +118,25 @@
             </ul>
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
-      </nav>
+    </nav>
   {% block content %}
     Add something here, yo
   {% endblock %}
-</body>
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class=col-md-4>
 
+      </div>
+      <div class=col-md-4>
+        <p style="color:gray">gola</p>
+      </div>
+      <div class=col-md-4>
+        
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
 </html>

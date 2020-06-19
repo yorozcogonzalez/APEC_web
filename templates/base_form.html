@@ -1,17 +1,70 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
-<h3>This is an {{ method }} calculation</h3>
+<form method="post" enctype="multipart/form-data" novalidate>
+	{% csrf_token %}
 
-{% if check != 'ok' %}
-	<p style="color:red; font-size:20px"> Project Name previously used!</p>
-{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1">
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<h3>This is an {{ method }} submission</h3>
+						<br>
+						{% if check != 'ok' %}
+							<p style="color:red; font-size:20px"> Project Name previously used!</p>
+						{% endif %}
+					</div>
+				</div>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
+				<div class=row>
+					<div class="row">
+						<div class="col-md-12">
+							{{ form.project_name|as_crispy_field }}	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							{{ form.charge|as_crispy_field }}	
+						</div>
+						<div class="col-md-6">
+							{{ form.multiplicity|as_crispy_field }}	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							{{ form.num_states|as_crispy_field }}	
+						</div>
+						<div class="col-md-6">
+							{{ form.selected_state|as_crispy_field }}	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{{ form.basis_set|as_crispy_field }}	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{{ form.xyz_file|as_crispy_field }}	
+						</div>
+					</div>
+					<br>
+					<button type="submit" class="btn btn-success">Submit</button>
+				</div>
+			</div>
+			<div class="col-md-5">
+			</div>		
+
+		</div>
+
+	</div>
 </form>
+
 
 {% endblock %}
