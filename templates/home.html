@@ -3,7 +3,6 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{# {% if user.is_authenticated %} #}
 
 {% load static %}
 <!--  <h4 style="color:gray; text-align:right"> Hi {{ user.email }}! </h4> -->
@@ -11,7 +10,6 @@
 .carousel-control.left, .carousel-control.right {
     background-image: none
 }
-
 /*
   Bootstrap Carousel Fade Transition (for Bootstrap 3.3.x)
   CSS from:       http://codepen.io/transportedman/pen/NPWRGq
@@ -56,7 +54,7 @@
     background-color: #A9A9A9;
 }
 
-.imagen {
+.imagen_caroucel {
   border: 1px solid #ddd;
   border-radius: 0px;
   padding-bottom: 55px;
@@ -81,26 +79,47 @@
                   <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                   <li data-target="#myCarousel" data-slide-to="1"></li>
                   <li data-target="#myCarousel" data-slide-to="2"></li>
+                  <li data-target="#myCarousel" data-slide-to="3"></li>
+                  <li data-target="#myCarousel" data-slide-to="4"></li>
                 </ol>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                   <div class="item active">
                     <center>
-                      <img src="{% static "caroucel/ESTM_cover.jpg" %}" alt="something" class="imagen">
+                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.9b00489" target="_blank"><img src="{% static "caroucel/ESTM_cover.jpg" %}" alt="something" class="imagen_caroucel">
+                      </a>
                     </center>
                     <br>
                   </div>
 
                   <div class="item">
                     <center>
-                      <img src="{% static "caroucel/APEC.jpg" %}" alt="something" class="imagen">
+                      <a href="https://chemistry-europe.onlinelibrary.wiley.com/doi/full/10.1002/cbic.201900016" target="_blank"><img src="{% static "caroucel/ChemBioChem_cover_2.jpg" %}" alt="something" class="imagen_caroucel">
+                      </a>
                     </center>
                     <br>
                   </div>
-                
+
                   <div class="item">
                     <center>
-                      <img src="{% static "caroucel/Lab.jpg" %}" alt="something" class="imagen">
+                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.9b00489" target="_blank"><img src="{% static "caroucel/ESTM.jpg" %}" alt="something" class="imagen_caroucel">
+                      </a>
+                    </center>
+                    <br>
+                  </div>
+
+                  <div class="item">
+                    <center>
+                      <a href="https://pubs.rsc.org/en/content/articlelanding/2019/cp/c9cp02230a#!divAbstract" target="_blank"><img src="{% static "caroucel/Pavel.jpg" %}" alt="something" class="imagen_caroucel">
+                      </a>
+                    </center>
+                    <br>
+                  </div>
+  
+                  <div class="item">
+                    <center>
+                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00860" target="_blank"><img src="{% static "caroucel/APEC_3.jpg" %}" alt="something" class="imagen_caroucel">
+                      </a>
                     </center>
                     <br>
                   </div>
@@ -116,31 +135,12 @@
                   <span class="glyphicon glyphicon-chevron-right"></span>
                   <span class="sr-only">Next</span>
                 </a>
-
-
               </div>
-
     </div>
-
     <div class="col-md-3">
-
     </div> 
-
-
   </div>
 </div>
-
 </body>
 </html>
-
-
-
-{# {% else %} #}
-
- <!-- <h3 style="color:gray;">This is a web page to simulate diferent properties of mulecular systems, Including:</h3>
-  <h4 style="color:gray;">- ESTM (Electrostatic Tuning Maps)</h4>
-  <h4 style="color:gray;">- APEC (Average Protein Electrostatic Configurations)</h4>
-  <h4 style="color:gray;">- FEG (Free energy geometry optimizations in solusion</p> -->
-
-{# {% endif %} #}
 {% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2 tex">
+		</div>
+
+		<div class="col-md-8">
+			<video name='Tutorial' controls autoplay width='90%'>
+				<source src="{% static "ESTM_web.mp4" %}" type="video/mp4"></source>
+			</video>
+			<br>
+			<h4> If video does not play or move back and forward click here: </h4>
+			<a href="https://www.dropbox.com/s/bebr33pa4c0qkhx/ESTM_web.mp4?dl=0" target="_blank"> Tutorial Video </a>
+		</div>
+		<div class="col-md-2 tex">
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}

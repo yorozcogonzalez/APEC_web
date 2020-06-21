@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+<! YOE https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/ >
+
+{% block title %}Login{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data" novalidate>
+	{% csrf_token %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9">
+
+			</div>
+			<div class="col-md-3 text-right">
+				<h3>Sign Out</h3>
+					<p>Are you sure you want to sign out?</p>
+					<br>
+				<br>
+				<button type="submit" class="btn btn-danger">Sign Out</button>
+			</div>
+		</div>
+	</div>
+</form>
+{% endblock %}

@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^inprogress/$', views.Inprogress.as_view(), name='inprogress'),
     url(r'^archive/$', archiveviews.ArchiveView.as_view(), name='archive'),
     url(r'^uploadmol2/(?P<check>\w+)/$', archiveviews.UploadMOL2View.as_view(), name='uploadmol2'),
-
+    url(r'^tutorial/$', views.TutorialView.as_view(), name='tutorial'),
 
    # Login Yoe
     path('admin/', admin.site.urls),

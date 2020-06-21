@@ -11,11 +11,14 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     crossorigin="anonymous"></script>
+
+  <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+
   <title>For QMMM calculations</title>
   <style>
     body {
-      margin-top: 0px;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
 
     .label-initial {
@@ -58,85 +61,102 @@
     opacity: 1.0
     }
     .navbar{
-    top:-15px;
-    margin-left: -15px;
-    margin-right: -15px;
+    top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;*/
     }
-    footer{
-      background: #535252;
-      padding: 20px;
-      position: absolute; 
-      bottom: 0;
-      right: 0;
-      left: 0;
-    }
-</style>
 
-<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+    #page-container {
+      position: relative;
+      min-height: 100vh;
+    }
+    #content-wrap {
+      padding-bottom: 60px;    /* Footer height */
+    }
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: #F8f8f8;   /* Footer height */
+      border-top: solid #828181 1px;
+    }
+    .imagen_logo{
+      height:50px;
+      padding-top: 15px;
+    }
+
+</style>
 
 </head>
 
+{% load static %}
+
 <body>
-    <nav class="navbar navbar-inverse"> 
-<!--    <nav class="navbar navbar-inverse"> -->
-        <div class="container-fluid">  <!-- contenedor que abarca todo el ancho de la pagina -->
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            {% if user.is_authenticated %}
-              <a class="navbar-brand" href="{% url 'home' %}">Home</a>
-            {% endif %}
+  <div id="page-container">
+    <div id="content-wrap">
+      <nav class="navbar navbar-inverse"> 
+      <!--nav class="navbar navbar-default"> -->
+          <div class="container-fluid">  <!-- contenedor que abarca todo el ancho de la pagina -->
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              {% if user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+              {% endif %}
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                {% if user.is_authenticated %}
+                  <li><a href="{% url 'index' %}">Index</a></li>
+                  <li><a href="{% url 'method' 'ESTM' %}">ESTM Job</a></li>
+                  <li><a href="{% url 'inprogress' %}">APEC Job</a></li>
+                  <li><a href="{% url 'inprogress' %}">FEG Job</a></li>
+                  <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">API <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="{% url 'server-list' %}">Server List</a></li>
+                          <li><a href="{% url 'job-list' %}">Job List</a></li>
+                      </ul>
+                  </li>
+                {% endif %}
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                  <li><a href="{% url 'archive' %}">ARCHIVE</a></li>
+                  <li><a href="{% url 'tutorial' %}">Tutorial</a></li>
+                  <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                {% else %}
+                  <li><a href="{% url 'account_login' %}">Login</a></li>
+                  <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% endif %}
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+      </nav>
+      {% block content %}
+        Add something here, yo
+      {% endblock %}
+    </div> <!-- content-wrap -->
+    <footer>
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="col-md-4 text-center">
           </div>
-
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              {% if user.is_authenticated %}
-                <li><a href="{% url 'index' %}">Index</a></li>
-                <li><a href="{% url 'method' 'ESTM' %}">ESTM Job</a></li>
-                <li><a href="{% url 'inprogress' %}">APEC Job</a></li>
-                <li><a href="{% url 'inprogress' %}">FEG Job</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">API <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'server-list' %}">Server List</a></li>
-                        <li><a href="{% url 'job-list' %}">Job List</a></li>
-                    </ul>
-                </li>
-              {% endif %}
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-              {% if user.is_authenticated %}
-                <li><a href="{% url 'archive' %}">ARCHIVE</a></li>
-                <li><a href="{% url 'inprogress' %}">Tutorial</a></li>
-                <li><a href="{% url 'admin:index' %}">Admin</a></li>
-                <li><a href="{% url 'account_logout' %}">Logout</a></li>
-              {% else %}
-                <li><a href="{% url 'account_login' %}">Login</a></li>
-                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-              {% endif %}
-            </ul>
-          </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
-  {% block content %}
-    Add something here, yo
-  {% endblock %}
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class=col-md-4>
-
+          <div class="col-md-4 text-center">
+            <a href="http://www.gozemlab.com/" target="_blank"> <img src="{% static "logo.jpg" %}" alt="something" class="imagen_logo"> </a>
+          </div>
+          <div class="col-md-4 text-right">
+            <p style="padding-top: 3%; color: gray;">
+              Version 1.0, edited on July, 2020. <br> Developed by <a href="https://github.com/yorozcogonzalez" target="_blank">Yoelvis Orozco-Gonzalez</a>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class=col-md-4>
-        <p style="color:gray">gola</p>
-      </div>
-      <div class=col-md-4>
-        
-      </div>
-    </div>
-  </div>
-</footer>
-
+    </footer>
+  </div> <!-- page-container --> 
 </body>
 </html>
