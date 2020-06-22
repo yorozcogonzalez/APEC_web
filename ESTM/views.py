@@ -92,7 +92,7 @@ filename=%s
 cp $remote/templates/Infos.dat .
 cp $remote/templates/vdw_surface_tp.py vdw_surface.py
 cp $remote/templates/ESTM.py .
-cp $remote/templates/create_inputs.sh create_inputs_%s.sh
+cp $remote/templates/fake_create_inputs.sh create_inputs_%s.sh
 source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
 
 echo Project %s >> Infos.dat
