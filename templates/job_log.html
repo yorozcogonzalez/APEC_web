@@ -39,7 +39,7 @@ if (state === 'prep') {
 </script>
 
 <script>
-socket = new ReconnectingWebSocket("ws://" + window.location.host + "/ws/job-log/{{ job_pk }}/");
+socket = new ReconnectingWebSocket("wss://" + window.location.host + "/ws/job-log/{{ job_pk }}/");
 
 socket.onmessage = function(e) {
   var { log_id, time, content, stream } = JSON.parse(e.data);

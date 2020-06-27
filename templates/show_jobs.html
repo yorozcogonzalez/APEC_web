@@ -24,7 +24,7 @@
 <script>
 /* Opening a websocket */
 /* https://javascript.info/websocket */
-socket = new ReconnectingWebSocket("ws://" + window.location.host + "/ws/job-user/");
+socket = new ReconnectingWebSocket("wss://" + window.location.host + "/ws/job-user/");
 
 socket.onmessage = function(e) {
   console.log("onmessage:", e);
