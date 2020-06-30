@@ -33,7 +33,7 @@ SECRET_KEY = '#9-u7b%vyd_50j!bl)ii=6thk^&pkf1a!nf70uh&bnclbvbgv-'
 
 #./manage collectstatic
 #DEBUG = False
-#ALLOWED_HOSTS = ['ec2-18-188-25-119.us-east-2.compute.amazonaws.com', '18.188.25.119', 'www.4qmmm.com', '4qmmm.com']
+#ALLOWED_HOSTS = ['ec2-18-221-153-167.us-east-2.compute.amazonaws.com', '18.221.153.167', 'www.4qmmm.com', '4qmmm.com']
 
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -111,7 +111,7 @@ DATABASES = {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'apec_web2',
+        'NAME': 'apec_web',
         'USER': 'yoelvis',
         'PASSWORD': 'Camaron8!',
         'HOST': 'localhost',
