@@ -29,7 +29,7 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 #	success_url = reverse_lazy('submit')
 	template_name = 'base_form.html'
 
-	granted_accounts = ["yoe2@gmail.com"]
+	granted_accounts = ["yoelvis@gmail.com"]
 
 	def get_context_data(self, **kwargs):
 		if str(self.request.user) in self.granted_accounts:
@@ -164,7 +164,7 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 						str(self.request.user), form.cleaned_data['comment'])
 
 				email_from = settings.EMAIL_HOST_USER
-				recipient_list = ['yoelvis.orozco@gmail.com',]
+				recipient_list = ['yoelvis.orozco@gmail.com','samerg@gmail.com']
 				send_mail(subject, message, email_from, recipient_list)
 
 				return redirect('home')
