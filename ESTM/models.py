@@ -32,3 +32,14 @@ class ESTM_object(models.Model):
 		constraints = [
 			models.UniqueConstraint(fields=['owner', 'project_name'], name='same_project_name')
 			]
+
+class GRANT_object(models.Model):
+	owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	full_name = models.CharField(max_length=50) #, primary_key=True) #, unique=True)
+	institution = models.CharField(max_length=50)
+#	email = models.CharField(max_length=50)
+	comment = models.CharField(max_length=200, blank=True)
+
+
+
+

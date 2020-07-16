@@ -125,6 +125,8 @@ class TutorialView(TemplateView):
 class Inprogress(LoginRequiredMixin, TemplateView):
     template_name = "In_progress.html"
 
+class ConfcodeView(LoginRequiredMixin, TemplateView):
+    template_name = "Confcode.html"
 
 
 

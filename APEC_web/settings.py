@@ -222,6 +222,15 @@ REMOTE_FILENAME = env('REMOTE_FILENAME')
 REMOTE_USER = env('REMOTE_USER')
 REMOTE_PASSWORD = env('REMOTE_PASSWORD')
 
+#email for grant request
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'ESTMaccess@gmail.com'
+EMAIL_HOST_PASSWORD = 'Habana2000!'
+EMAIL_USE_TLS = False  # port 587
+EMAIL_USE_SSL = True  # port 465
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

@@ -2,146 +2,175 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
 from .forms import ESTMForm
+from .forms import GRANTForm
 from .models import ESTM_object
 from archive_ESTM.models import ESTM_archive
 from django_remote_submission.models import Interpreter, Server, Job, Log, Result
 from django_remote_submission.tasks import submit_job_to_server, copy_file_to_server, delete_jobs_from_server
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
-
 from django.conf import settings
 import os
 import shutil
 from pathlib import Path
 from django.core.files import File
-
 import textwrap
 import logging
 import time
-
 from django.db import IntegrityError
+from django.core.mail import send_mail
 
 logger = logging.getLogger(__name__)  # pylint: disable=C0103
 
 class ESTM_View(LoginRequiredMixin, TemplateView):
-	form_class = ESTMForm
+#	form_estm = ESTMForm
+#	form_grant = GRANTForm
 #	success_url = reverse_lazy('submit')
 	template_name = 'base_form.html'
 
+	granted_accounts = ["yoe2@gmail.com"]
+
 	def get_context_data(self, **kwargs):
-		context = super(ESTM_View, self).get_context_data(**kwargs)
-		context['form'] = self.form_class()
-		context['method'] = 'ESTM'
-		context['check'] = kwargs['check']
-		return context
+		if str(self.request.user) in self.granted_accounts:
+			context = super(ESTM_View, self).get_context_data(**kwargs)
+			context['form'] = ESTMForm
+			context['method'] = 'ESTM'
+			context['check'] = kwargs['check']
+			return context
+		else:
+			context = super(ESTM_View, self).get_context_data(**kwargs)
+			context['form'] = GRANTForm
+			context['method'] = 'grant'
+			context['check'] = kwargs['check']
+			return context
 
 	def post(self, request, *args, **kwargs):
-		form = self.form_class(request.POST, request.FILES)
-		if form.is_valid():
-			if ESTM_archive.objects.filter(project_name=form.cleaned_data['project_name'], owner=request.user).exists():
+		if str(self.request.user) in self.granted_accounts:
+			form = ESTMForm(request.POST, request.FILES)
+			if form.is_valid():
+				if ESTM_archive.objects.filter(project_name=form.cleaned_data['project_name'], owner=request.user).exists():
+					return redirect('ESTM', check='error')
+				else:	
+					try:
+						estm = ESTM_object.objects.create(xyz_file = request.FILES['xyz_file'],
+						owner = request.user,
+						project_name = form.cleaned_data['project_name'],
+						charge = form.cleaned_data['charge'],
+						multiplicity = form.cleaned_data['multiplicity'],
+						basis_set = form.cleaned_data['basis_set'],
+						num_states = form.cleaned_data['num_states'],
+						selected_state = form.cleaned_data['selected_state'],				
+						)
+					except IntegrityError:  # db constraint User-Project_name
+						return redirect('ESTM', check='error')			
+
+				(interpreter, _) = Interpreter.objects.get_or_create(
+					name='bash',
+					path='/usr/bin/bash',
+					arguments='',
+		#            name='Python',
+		#            path=settings.PYTHON_PATH,
+		#            arguments=settings.PYTHON_ARGUMENTS,
+				)
+				(server, _) = Server.objects.get_or_create(
+					title='Example Server',
+					hostname=settings.SERVER_HOSTNAME,
+					port=settings.SERVER_PORT,
+				)
+				logger.debug("Running job in {} using {}".format(server, interpreter))
+
+	#			num_estm = len(ESTM_object.objects.all())
+	#			job_data = ESTM_object.objects.filter()[num_estm-1]
+	#			filepath = job_data.xyz_file.path
+	##			filename = job_data.xyz_file.name  # it gives xyzfiles/name
+	#			dirname, basename = os.path.split(filepath.rstrip('/'))
+	#			filename = basename
+	#			project_name = job_data.project_name
+	#			multiplicity = job_data.multiplicity
+	#			charge = job_data.charge
+
+				filepath = estm.xyz_file.path
+				dirname, basename = os.path.split(filepath.rstrip('/'))
+				filename = basename
+
+				program = textwrap.dedent('''\
+	#!/bin/bash
+	remote=%s
+	filename=%s
+	cp $remote/templates/Infos.dat .
+	cp $remote/templates/vdw_surface_tp.py vdw_surface.py
+	cp $remote/templates/ESTM.py .
+	cp $remote/templates/create_inputs.sh create_inputs_%s.sh
+	source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
+
+	echo Project %s >> Infos.dat
+	echo xyz_name $filename >> Infos.dat
+	echo charge %s >> Infos.dat
+	echo multiplicity %s >> Infos.dat
+	echo basis_set %s >> Infos.dat
+	echo num_states %s >> Infos.dat
+	echo selected_state %s >> Infos.dat
+	sed -i "s/FILENAME/$filename/" vdw_surface.py
+	while [ ! -f $filename ]; do
+		sleep 0.5
+	done
+	python vdw_surface.py
+		    	''') %(settings.REMOTE_DIRECTORY, filename, estm.project_name, estm.project_name, estm.charge, estm.multiplicity,
+		    	estm.basis_set, estm.num_states, estm.selected_state)
+				remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
+				(job, _) = Job.objects.get_or_create(
+					title=estm.project_name,
+					program=program,
+					remote_directory=remote_directory,
+					remote_filename=settings.REMOTE_FILENAME,
+					owner=request.user,
+					server=server,
+					interpreter=interpreter,
+					estm_data=estm
+				)
+
+				while not os.path.isfile(job.estm_data.xyz_file.path):
+					time.sleep(1)
+
+	#			copy_file_to_server.delay(
+	#				job_pk=job.pk,
+	#				password=settings.REMOTE_PASSWORD,
+	#				username=settings.REMOTE_USER,
+	#			)
+	#			time.sleep(3)
+				submit_job_to_server.delay(     #deley is used by celery to pass task to the queue
+					job_pk=job.pk,
+					password=settings.REMOTE_PASSWORD,
+					username=settings.REMOTE_USER,
+					copy_file=job.estm_data.xyz_file.path,
+				)
+				#return render(request, 'test.html', {'test': newdoc}) # Usamos esto si queremos pasarle y ver los resultados en test.html
+				#return render(request, 'estm_job_status.html', {'newdoc': newdoc}) # Te redirecciona pero no hace las funciones del view
+				return redirect('method', method='ESTM')
+			else:
 				return redirect('ESTM', check='error')
-			else:	
-				try:
-					estm = ESTM_object.objects.create(xyz_file = request.FILES['xyz_file'],
-					owner = request.user,
-					project_name = form.cleaned_data['project_name'],
-					charge = form.cleaned_data['charge'],
-					multiplicity = form.cleaned_data['multiplicity'],
-					basis_set = form.cleaned_data['basis_set'],
-					num_states = form.cleaned_data['num_states'],
-					selected_state = form.cleaned_data['selected_state'],				
-					)
-				except IntegrityError:  # db constraint User-Project_name
-					return redirect('ESTM', check='error')			
-
-			(interpreter, _) = Interpreter.objects.get_or_create(
-				name='bash',
-				path='/usr/bin/bash',
-				arguments='',
-	#            name='Python',
-	#            path=settings.PYTHON_PATH,
-	#            arguments=settings.PYTHON_ARGUMENTS,
-			)
-			(server, _) = Server.objects.get_or_create(
-				title='Example Server',
-				hostname=settings.SERVER_HOSTNAME,
-				port=settings.SERVER_PORT,
-			)
-			logger.debug("Running job in {} using {}".format(server, interpreter))
-
-#			num_estm = len(ESTM_object.objects.all())
-#			job_data = ESTM_object.objects.filter()[num_estm-1]
-#			filepath = job_data.xyz_file.path
-##			filename = job_data.xyz_file.name  # it gives xyzfiles/name
-#			dirname, basename = os.path.split(filepath.rstrip('/'))
-#			filename = basename
-#			project_name = job_data.project_name
-#			multiplicity = job_data.multiplicity
-#			charge = job_data.charge
-
-			filepath = estm.xyz_file.path
-			dirname, basename = os.path.split(filepath.rstrip('/'))
-			filename = basename
-
-			program = textwrap.dedent('''\
-#!/bin/bash
-remote=%s
-filename=%s
-cp $remote/templates/Infos.dat .
-cp $remote/templates/vdw_surface_tp.py vdw_surface.py
-cp $remote/templates/ESTM.py .
-cp $remote/templates/create_inputs.sh create_inputs_%s.sh
-source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
-
-echo Project %s >> Infos.dat
-echo xyz_name $filename >> Infos.dat
-echo charge %s >> Infos.dat
-echo multiplicity %s >> Infos.dat
-echo basis_set %s >> Infos.dat
-echo num_states %s >> Infos.dat
-echo selected_state %s >> Infos.dat
-sed -i "s/FILENAME/$filename/" vdw_surface.py
-while [ ! -f $filename ]; do
-	sleep 0.5
-done
-python vdw_surface.py
-	    	''') %(settings.REMOTE_DIRECTORY, filename, estm.project_name, estm.project_name, estm.charge, estm.multiplicity,
-	    	estm.basis_set, estm.num_states, estm.selected_state)
-			remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
-			(job, _) = Job.objects.get_or_create(
-				title=estm.project_name,
-				program=program,
-				remote_directory=remote_directory,
-				remote_filename=settings.REMOTE_FILENAME,
-				owner=request.user,
-				server=server,
-				interpreter=interpreter,
-				estm_data=estm
-			)
-
-			while not os.path.isfile(job.estm_data.xyz_file.path):
-				time.sleep(1)
-
-#			copy_file_to_server.delay(
-#				job_pk=job.pk,
-#				password=settings.REMOTE_PASSWORD,
-#				username=settings.REMOTE_USER,
-#			)
-#			time.sleep(3)
-			submit_job_to_server.delay(     #deley is used by celery to pass task to the queue
-				job_pk=job.pk,
-				password=settings.REMOTE_PASSWORD,
-				username=settings.REMOTE_USER,
-				copy_file=job.estm_data.xyz_file.path,
-			)
-			#return render(request, 'test.html', {'test': newdoc}) # Usamos esto si queremos pasarle y ver los resultados en test.html
-			#return render(request, 'estm_job_status.html', {'newdoc': newdoc}) # Te redirecciona pero no hace las funciones del view
-			return redirect('method', method='ESTM')
+	#			return render(request, self.template_name, {'form': form})
 		else:
-			return redirect('ESTM', check='error')
-#			return render(request, self.template_name, {'form': form})
+			form = GRANTForm(request.POST)
+			if form.is_valid():
+				subject = 'Request for ESTM calculation'
+				message = textwrap.dedent('''\
+					%s
+					%s
+					%s
+					%s
+					''') %(form.cleaned_data['full_name'], form.cleaned_data['institution'], 
+						str(self.request.user), form.cleaned_data['comment'])
+
+				email_from = settings.EMAIL_HOST_USER
+				recipient_list = ['yoelvis.orozco@gmail.com',]
+				send_mail(subject, message, email_from, recipient_list)
+
+				return redirect('home')
+			else:
+				return redirect('ESTM', check='error')
+
 
 class ESTM_Calculation(LoginRequiredMixin, TemplateView):
 	template_name = 'show_jobs.html'
@@ -149,8 +178,8 @@ class ESTM_Calculation(LoginRequiredMixin, TemplateView):
 	def get(self, request, **kwargs):
 		job_data = Job.objects.get(pk=kwargs['job_pk'])
 		program2 = textwrap.dedent('''\
-#!/bin/bash
-bash create_inputs_%s.sh
+			#!/bin/bash
+			bash create_inputs_%s.sh
 	    ''') %(job_data.title)
 		job_data.program = program2
 		job_data.state = "vdw"
@@ -176,9 +205,9 @@ class DeleteJobView(LoginRequiredMixin, TemplateView):
 		kwargs = self.kwargs
 
 		scancel = textwrap.dedent('''\
-#!/bin/bash
-rm -rf %s
-exit 0
+			#!/bin/bash
+			rm -rf %s
+			exit 0
 		''') %(project_name)
 
 		remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/'
@@ -227,33 +256,33 @@ exit 0
 		kwargs = self.kwargs
 
 		scancel = textwrap.dedent('''\
-#!/bin/bash
-proj="%s"
-calculations=`grep "Calculations" $proj/Infos.dat | awk '{ print $2 }'`
-if [[ $calculations != "done" ]]; then   
-   while [[ $calculations != "submitted" ]]; do
-      calculations=`grep "Calculations" $proj/Infos.dat | awk '{ print $2 }'`
-      sleep 1
-   done
+			#!/bin/bash
+			proj="%s"
+			calculations=`grep "Calculations" $proj/Infos.dat | awk '{ print $2 }'`
+			if [[ $calculations != "done" ]]; then   
+			   while [[ $calculations != "submitted" ]]; do
+			      calculations=`grep "Calculations" $proj/Infos.dat | awk '{ print $2 }'`
+			      sleep 1
+			   done
 
-   mv $proj/jobnumbers jobnumbers_$proj
+			   mv $proj/jobnumbers jobnumbers_$proj
 
-   numjobs=`wc -l jobnumbers_$proj | awk '{ print $1 }'`
-   for i in $(seq 1 $numjobs); do
-      job=`head -n $i jobnumbers_$proj | tail -n1 | awk '{ print $4 }'`
-      scancel $job 2>/dev/null
-   done
+			   numjobs=`wc -l jobnumbers_$proj | awk '{ print $1 }'`
+			   for i in $(seq 1 $numjobs); do
+			      job=`head -n $i jobnumbers_$proj | tail -n1 | awk '{ print $4 }'`
+			      scancel $job 2>/dev/null
+			   done
 
-   while [[ $calculations != "deleted" ]]; do
-      calculations=`grep "Calculations" $proj/Infos.dat | awk '{ print $2 }'`
-      sleep 1
-   done
-   rm -r $proj jobnumbers_$proj.sh
-#else
-#   sleep 1
-#   rm -rf $proj
-fi
-exit 0
+			   while [[ $calculations != "deleted" ]]; do
+			      calculations=`grep "Calculations" $proj/Infos.dat | awk '{ print $2 }'`
+			      sleep 1
+			   done
+			   rm -r $proj jobnumbers_$proj.sh
+			#else
+			#   sleep 1
+			#   rm -rf $proj
+			fi
+			exit 0
 		''') %(project_name)
 		remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/'
 		(job, _) = Job.objects.get_or_create(
@@ -294,24 +323,24 @@ exit 0
 		kwargs = self.kwargs
 
 		scancel = textwrap.dedent('''\
-#!/bin/bash
-proj="%s"
-if [[ -f $proj/jobnumbers ]]; then   
-   mv $proj/jobnumbers jobnumbers_$proj
-   numjobs=`wc -l jobnumbers_$proj | awk '{ print $1 }'`
-   if [[ $numjobs -gt 0 ]]; then
-      for i in $(seq 1 $numjobs); do
-         job=`head -n $i jobnumbers_$proj | tail -n1 | awk '{ print $4 }'`
-         scancel $job 2>/dev/null
-      done
-   fi
-   sleep 1
-   rm -r $proj jobnumbers_$proj.sh
-else
-   sleep 1
-   rm -rf $proj
-fi
-exit 0
+			#!/bin/bash
+			proj="%s"
+			if [[ -f $proj/jobnumbers ]]; then   
+			   mv $proj/jobnumbers jobnumbers_$proj
+			   numjobs=`wc -l jobnumbers_$proj | awk '{ print $1 }'`
+			   if [[ $numjobs -gt 0 ]]; then
+			      for i in $(seq 1 $numjobs); do
+			         job=`head -n $i jobnumbers_$proj | tail -n1 | awk '{ print $4 }'`
+			         scancel $job 2>/dev/null
+			      done
+			   fi
+			   sleep 1
+			   rm -r $proj jobnumbers_$proj.sh
+			else
+			   sleep 1
+			   rm -rf $proj
+			fi
+			exit 0
 		''') %(project_name)
 		remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/'
 		(job, _) = Job.objects.get_or_create(
