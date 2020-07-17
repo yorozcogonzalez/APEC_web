@@ -29,7 +29,7 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 #	success_url = reverse_lazy('submit')
 	template_name = 'base_form.html'
 
-	granted_accounts = ["yoelvis@gmail.com"]
+	granted_accounts = ["yoelvis@gmail.com", "samerg1@hotmail.com"]
 
 	def get_context_data(self, **kwargs):
 		if str(self.request.user) in self.granted_accounts:
