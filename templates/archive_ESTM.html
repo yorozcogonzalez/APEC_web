@@ -11,15 +11,14 @@ table {
 
 <div class="container">  <!-- contenedor con ancho fijo, auque se puede contraer o expandir -->
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<h1 style="color:gray; padding-top: 40px">ESTM Archive</h1>
 			<h4 style="color:gray"> Visualive archived ESTM maps or Upload a new one (mol2 format) </h4>
 		</div>
-		<div class="col-md-6">
-			<!--div class="col-md-12"-->
-					<br><br><br><br>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
 					<a class="btn btn-primary pull-right" href="{% url 'uploadmol2' 'ok' %}">UPLOAD ESTM mol2 from file</a>
-			<!--/div-->
 		</div>
 	</div>
 	<br>

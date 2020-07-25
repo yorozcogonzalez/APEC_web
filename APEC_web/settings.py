@@ -231,6 +231,9 @@ EMAIL_HOST_PASSWORD = 'Habana2000!'
 EMAIL_USE_TLS = False  # port 587
 EMAIL_USE_SSL = True  # port 465
 
+#ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+#ACCOUNT_EMAIL_REQUIRED = True
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

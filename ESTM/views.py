@@ -29,10 +29,10 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 #	success_url = reverse_lazy('submit')
 	template_name = 'base_form.html'
 
-	granted_accounts = ["yoelvis.orozco@gmail.com", "samerg1@hotmail.com"]
+	granted_accounts = ["yorozcogonzalez@gsu.edu", "yoelvis.orozco@gmail.com", "samerg1@hotmail.com"]
 
 	def get_context_data(self, **kwargs):
-		if str(self.request.user) in self.granted_accounts:
+		if str(self.request.user).lower() in self.granted_accounts:
 			context = super(ESTM_View, self).get_context_data(**kwargs)
 			context['form'] = ESTMForm
 			context['method'] = 'ESTM'
