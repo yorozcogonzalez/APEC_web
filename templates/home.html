@@ -55,39 +55,59 @@
 }
 
 .imagen_caroucel {
-  border: 1px solid #ddd;
-  border-radius: 0px;
-  padding-bottom: 55px;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  height:500px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+/*  border: 1px solid #ddd; */
+/*  border-radius: 0px;  */
+  padding-bottom: 0px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 100%;
 }
 
+.vcenter {
+   display: inline-block;
+   vertical-align: middle;
+   float: none;
+}
+
+.mol-container2 {  
+  width: 85%;
+  height: 505px;
+  position: relative;
+  left: 7%;
+}
+
+
 </style>
+<!--div class="container-fluid">
+  <div class="row">
+    <img src="{% static "Fondo.jpg" %}" style="width: 100%; z-index: 0; padding-top: -500px;">
+  </div>
+</div-->
+
+
 <div class="container-fluid">
   <br>
   <div class="row">
-    <div class="col-md-3">
+    <!--div class="col-md-0">
 
-    </div> 
+    </div--> 
 
-    <div class="col-md-6"> 
-              <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <!--div class="col-md-12"--> 
+              <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
-                <ol class="carousel-indicators">
+                <ol class="carousel-indicators" style="margin-bottom: 0px">
                   <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                   <li data-target="#myCarousel" data-slide-to="1"></li>
                   <li data-target="#myCarousel" data-slide-to="2"></li>
-                  <li data-target="#myCarousel" data-slide-to="3"></li>
-                  <li data-target="#myCarousel" data-slide-to="4"></li>
+                  <!--li data-target="#myCarousel" data-slide-to="3"></li>
+                  <li data-target="#myCarousel" data-slide-to="4"></li-->
                 </ol>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                   <div class="item active">
                     <center>
-                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.9b00489" target="_blank"><img src="{% static "caroucel/ESTM_cover.jpg" %}" alt="something" class="imagen_caroucel">
+                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.9b00489" target="_blank"><img src="{% static "caroucel/ESTM_cover8.jpg" %}" alt="something" class="imagen_caroucel">
                       </a>
                     </center>
                     <br>
@@ -95,7 +115,15 @@
 
                   <div class="item">
                     <center>
-                      <a href="https://chemistry-europe.onlinelibrary.wiley.com/doi/full/10.1002/cbic.201900016" target="_blank"><img src="{% static "caroucel/ChemBioChem_cover_2.jpg" %}" alt="something" class="imagen_caroucel">
+                      <a href="https://chemistry-europe.onlinelibrary.wiley.com/doi/full/10.1002/cbic.201900016" target="_blank"><img src="{% static "caroucel/ChemBioChem_cover3.jpg" %}" alt="something" class="imagen_caroucel">
+                      </a>
+                    </center>
+                    <br>
+                  </div>
+
+                  <!--div class="item">
+                    <center>
+                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.9b00489" target="_blank"><img src="{% static "caroucel/ESTM2.jpg" %}" alt="something" class="imagen_caroucel">
                       </a>
                     </center>
                     <br>
@@ -103,23 +131,15 @@
 
                   <div class="item">
                     <center>
-                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcb.9b00489" target="_blank"><img src="{% static "caroucel/ESTM.jpg" %}" alt="something" class="imagen_caroucel">
+                      <a href="https://pubs.rsc.org/en/content/articlelanding/2019/cp/c9cp02230a#!divAbstract" target="_blank"><img src="{% static "caroucel/Pavel2.jpg" %}" alt="something" class="imagen_caroucel">
                       </a>
                     </center>
                     <br>
-                  </div>
-
-                  <div class="item">
-                    <center>
-                      <a href="https://pubs.rsc.org/en/content/articlelanding/2019/cp/c9cp02230a#!divAbstract" target="_blank"><img src="{% static "caroucel/Pavel.jpg" %}" alt="something" class="imagen_caroucel">
-                      </a>
-                    </center>
-                    <br>
-                  </div>
+                  </div-->
   
                   <div class="item">
                     <center>
-                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00860" target="_blank"><img src="{% static "caroucel/APEC_3.jpg" %}" alt="something" class="imagen_caroucel">
+                      <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00860" target="_blank"><img src="{% static "caroucel/APEC4.jpg" %}" alt="something" class="imagen_caroucel">
                       </a>
                     </center>
                     <br>
@@ -137,11 +157,122 @@
                   <span class="sr-only">Next</span>
                 </a>
               </div>
+    <!--/div-->
+    <!--div class="col-md-0">
+    </div--> 
+  </div>
+  <br>
+  <br>
+    <hr>
+  <br>
+  <br>
+  <br>
+
+
+ <!-- ************************ -->
+ <!-- Surface on the home page -->
+ <!-- ************************ -->
+  <!--div class="row">
+    <div class="col-md-12">
+      <h2 style="color: #18375d; font-weight: bold; margin-left: 8%"> Electrostatic Spectral Tunning Map</h2>
     </div>
-    <div class="col-md-3">
-    </div> 
+  </div-->
+  <div class="row">
+    <!--div class="col-md-6">
+      <img src="{% static "ESTM_steps2.jpg" %}" style="width: 100%; margin-left: 5%; margin-top: 5%">  
+    </div-->
+    <div class="col-md-6">
+      <p style="color: white; padding-left: 5%; font-family: serif; font-size: 18px; background-color: #18375d; padding: 5%; text-align: justify;"> <span style="font-size: 26px";>What are ESTMs?</span> <br><br>Electrostatic Spectral Tuning Maps (ESTMs) is a numerical approach that uses a series of quantum chemical calculations to determine the effect of point charges on the excitation energy of a molecule. The result is a visual map to aid in color/spectral tuning of biological chromophores. We are working on extending these maps to other properties. <br>
+
+      For more details on how to interpret ESTMs and for a few examples, see the following papers:<br>
+      <br>
+      <span>  <a href="http://dx.doi.org/10.1021/acs.jpcb.9b00489" target="_blank" style="color: white"> &middot; Phys. Chem. B. 123, 4813—4824. 2019 </a> </span> <br>
+      <span>  <a href="https://doi.org/10.1039/C9CP02230A" target="_blank" style="color: white"> &middot; Phys. Chem. Chem. Phys., 2019,21, 16526-16537 </a> </span> <br>
+      <br>
+      If you use ESTMs, please cite:
+      Orozco-Gonzalez Y, Kabir MP, Gozem S, J. Phys. Chem. B. 123, 4813—4824. 2019.
+      <br>
+      <br>
+      Click on "ESTM Job” to get started.
+      </p>  
+    </div>
+
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="container-01" class="mol-container2"></div>
+        </div>
+        <div class="col-md-12" style="padding-left: 40%">
+          <div class="slidecontainer" style="color: rgb(255, 120, 0);">
+            <input type="range" min="0" max="1" step="0.05" value="0.7" class="slider" id="myRange">
+          </div>
+          <p> Opacity: <span id="demo"></span></p>    
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <br>
+  <br>
+
+  <div class="row" style="background-color: #18375d">
+    <div class="col-md-5 text-center">
+      <img src="{% static "Tutorial_video_text.jpg" %}" style="width: 50%; padding-top: 30%">
+    </div>
+
+    <div class="col-md-7" style="padding-top: 50px; padding-bottom: 50px">
+      <video name='Tutorial' controls autoplay width='90%'>
+        <source src="{% static "Video_2.mp4" %}" type="video/mp4"></source>
+      </video>
+      <br>
+    </div>
   </div>
 </div>
+
+      <script>
+      var slider = document.getElementById("myRange");
+      var output = document.getElementById("demo");
+      output.innerHTML = slider.value; // Display the default slider value
+
+      let element = $('#container-01');
+      let config = { backgroundColor: 'white' };
+      var mol2Uri = '{% static "PCB.mol2" %}';
+      var xyzUri = '{% static "PCB.xyz" %}';
+      var limit = parseInt('{{ lim }}')
+
+      // Update the current slider value (each time you drag the slider handle)
+
+        function plotear (valor) {
+        let viewer = $3Dmol.createViewer( element, config ); 
+
+        $.get( mol2Uri, function(data) {
+          viewer.addModel( data, "mol2" );
+          viewer.addSurface($3Dmol.SurfaceType.SES, {map:{prop:'partialCharge',scheme:new $3Dmol.Gradient.RWB(-1,1)}, opacity:valor});
+          viewer.zoomTo();
+          viewer.zoom(0.9);
+        });
+        
+        $.get( xyzUri, function(data) {
+          viewer.addModel( data, "xyz" );
+          viewer.setStyle({stick: {color: 'spectrum'}});
+      /*    viewer.setStyle({sphere:{colorscheme:{prop:'partialCharge',gradient: new $3Dmol.Gradient.RWB(-.0074,.0074)}}}); */
+          viewer.zoomTo();
+          viewer.zoom(0.9);
+          viewer.render();
+        });
+        };
+
+      plotear(0.7);
+      slider.onchange = function() {
+        output.innerHTML = this.value;
+        var valor = this.value;
+
+        plotear(valor);
+      };
+      </script>
+
 </body>
 </html>
 {% endblock %}

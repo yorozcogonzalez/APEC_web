@@ -16,7 +16,7 @@
 				<div class="col-md-6">
 					<div class="row">
 						<div class="col-md-12">
-							<h3>This is an {{ method }} submission</h3>
+							<h3 style="padding-top: 40px">{{ method }} submission page</h3>
 							<br>
 							{% if check != 'ok' %}
 								<p style="color:red; font-size:20px"> Project Name previously used or required fields not filled!</p>
@@ -57,6 +57,8 @@
 							</div>
 						</div>
 						<br>
+						<p>After submission you will be returned to the List of Jobs page.  Once the vdW shows that it is succeeded, please view Log to proceed.</p>
+						<br>
 						<button type="submit" class="btn btn-success">Submit</button>
 					</div>
 				</div>
@@ -80,13 +82,10 @@
 				<div class="col-md-6">
 					<div class="row">
 						<div class="col-md-12">
-							<p>
-							<br>
-							Before submiting Jobs, you must submit the following form for us to evaluate if we can grant your account with access to the Computing Center. <br> 
-							We will be in touch very soon using the registered e-mail. 
+							<p style="padding-top: 60px">
+							Since this is an early prototype of the website and due to limited resources, we can only provide access to a limited number of users at the moment. <br> Please complete the following details to request access to submit jobs. <br> We will be in touch very soon using the e-mail you used to register. 
 							<p>
 							Thank you
-							<br>
 							<br>
 							{% if check != 'ok' %}
 								<p style="color:red; font-size:20px"> Required fields not filled!</p>

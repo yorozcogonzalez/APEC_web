@@ -15,5 +15,5 @@ class GRANTForm(forms.ModelForm):  # Yoe, This is used to fill the model opbect 
 	class Meta:
 		model = GRANT_object
 		fields = ('full_name', 'institution', 'comment')
-		labels = {'full_name': 'Full Name', 'institution': 'Name of the Institution', 
+		labels = {'full_name': 'Full Name', 'institution': 'Name of your institution', 
 					'comment': 'Optional Comment (200 characters)'}

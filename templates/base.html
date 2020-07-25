@@ -61,9 +61,10 @@
     opacity: 1.0
     }
     .navbar{
-    top: 5px;
-    margin-left: 5px;
-    margin-right: 5px;*/
+    top: 0px;
+    margin-bottom: -20px;
+    margin-left: 0px;
+    margin-right: 0px;*/
     }
 
     #page-container {
@@ -113,18 +114,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-left navbar-collapse">
+                {# <li><a href="{% url 'indexx' %}">Indexx</a></li> #}
                 {% if user.is_authenticated %}
-                  <li><a href="{% url 'index' %}">Index</a></li>
                   <li><a href="{% url 'method' 'ESTM' %}">ESTM Job</a></li>
                   <!--li><a href="{% url 'inprogress' %}">APEC Job</a></li-->
                   <!--li><a href="{% url 'inprogress' %}">FEG Job</a></li-->
-                  <li class="dropdown">
+                  <!--li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">API <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                           <li><a href="{% url 'server-list' %}">Server List</a></li>
                           <li><a href="{% url 'job-list' %}">Job List</a></li>
                       </ul>
-                  </li>
+                  </li-->
                 {% endif %}
               </ul>
 
@@ -135,7 +136,7 @@
               </ul>
 
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'tutorial' %}">Tutorial</a></li>
+                {# <li><a href="{% url 'tutorial' %}">Tutorial</a></li> #}
                 {% if user.is_authenticated %}
                   <li><a href="{% url 'archive' %}">ARCHIVE</a></li>
                   <li><a href="{% url 'admin:index' %}">Admin</a></li>
@@ -162,7 +163,7 @@
           </div>
           <div class="col-md-4 text-right">
             <p style="padding-top: 3%; color: gray;">
-              Version 1.0, edited on July, 2020. <br> Developed by <a href="https://github.com/yorozcogonzalez" target="_blank">Yoelvis Orozco-Gonzalez</a>
+              Version 1.2, edited on July, 2020. <br> Website by <a href="https://github.com/yorozcogonzalez" target="_blank">Yoelvis Orozco-Gonzalez</a>
             </p>
           </div>
         </div>

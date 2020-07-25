@@ -5,11 +5,14 @@
 {% block content %}
 
 <div class="container">
-  <h3 id="satisfied" style="color:gray;">This is the surface to be generated. Are you satisfied?</h3>
-  <a id="yes" class="btn btn-warning" href="{% url 'ESTM_calc' job_pk %}">YES</a>
-  <a id="no" class="btn btn-warning" disabled>NO</a>
+  <h3 id="satisfied" style="padding-top: 40px">These are the points that will be used to generate the ESTM surface</h3>
+  <br>
 
   <div id="container-01" class="mol-container"></div>
+  <a id="cancel" class="btn btn-default" data-toggle="tooltip" data-placement="top" href="javascript:history.go(-1);" title="Go back.">Go Back</a>
+  <a id="yes" class="btn btn-warning" href="{% url 'ESTM_calc' job_pk %}">Continue</a>
+
+  <!--a id="no" class="btn btn-warning" disabled>NO</a-->
 
   <script>
   var x = document.getElementById('satisfied');

@@ -27,12 +27,12 @@ from archive_ESTM import views as archiveviews
 
 urlpatterns = [
 #    url(r'^admin/', admin.site.urls),
-    url(r'^index$', views.IndexView.as_view(), name='index'),
 
+  #  url(r'^index$', views.IndexView.as_view(), name='index'),
     url(r'^logs/(?P<job_pk>[0-9]+)/$', views.JobLogView.as_view(), name='logs'),
-    url(r'^servers/$', views.ServerList.as_view(), name='server-list'),
+  #  url(r'^servers/$', views.ServerList.as_view(), name='server-list'),
     url(r'^servers/(?P<pk>[0-9]+)/$', views.ServerDetail.as_view(), name='server-detail'),
-    url(r'^jobs/$', views.JobList.as_view(), name='job-list'),
+  #  url(r'^jobs/$', views.JobList.as_view(), name='job-list'),
     url(r'^api/', include('django_remote_submission.urls')),
     url(r'^method/(?P<method>\w+)/$', views.ShowJobs.as_view(), name='method'),
     url(r'^estmform/(?P<check>\w+)/$', estmviews.ESTM_View.as_view(), name='ESTM'),
@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^inprogress/$', views.Inprogress.as_view(), name='inprogress'),
     url(r'^archive/$', archiveviews.ArchiveView.as_view(), name='archive'),
     url(r'^uploadmol2/(?P<check>\w+)/$', archiveviews.UploadMOL2View.as_view(), name='uploadmol2'),
-    url(r'^tutorial/$', views.TutorialView.as_view(), name='tutorial'),
+  #  url(r'^tutorial/$', views.TutorialView.as_view(), name='tutorial'),
 
    # Login Yoe
     path('admin/', admin.site.urls),

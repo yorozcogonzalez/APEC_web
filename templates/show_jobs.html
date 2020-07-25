@@ -2,7 +2,8 @@
 
 {% block content %}
 <div class="container">  <!-- contenedor con ancho fijo, auque se puede contraer o expandir -->
-  <h1>List of Jobs</h1>
+  <h1 style="padding-top: 40px">List of Jobs</h1>
+  <br>
   <a class="btn btn-warning" href="{% url method 'ok' %}">Create new {{ method }} Job</a>
    <table class="table">
     <thead>
@@ -11,14 +12,13 @@
       <th>vdW Surface</th>
       <th>ESTM Map</th>
       <th>Modified</th>
-      <th>See log...</th>
+      <th>View Log ...</th>
       <th>Archive</th>
       <th></th>
     </thead>
     <tbody id="job-status-rows"></tbody>
   </table>
 </div>
-
 <script src="https://cdn.rawgit.com/joewalnes/reconnecting-websocket/fd7c819bb15eeee3452c17e317c0a3664c442965/reconnecting-websocket.min.js"></script>
 
 <script>

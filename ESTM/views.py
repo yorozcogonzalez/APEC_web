@@ -29,7 +29,7 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 #	success_url = reverse_lazy('submit')
 	template_name = 'base_form.html'
 
-	granted_accounts = ["yoelvis@gmail.com", "samerg1@hotmail.com"]
+	granted_accounts = ["yoelvis.orozco@gmail.com", "samerg1@hotmail.com"]
 
 	def get_context_data(self, **kwargs):
 		if str(self.request.user) in self.granted_accounts:
@@ -95,27 +95,27 @@ class ESTM_View(LoginRequiredMixin, TemplateView):
 				filename = basename
 
 				program = textwrap.dedent('''\
-	#!/bin/bash
-	remote=%s
-	filename=%s
-	cp $remote/templates/Infos.dat .
-	cp $remote/templates/vdw_surface_tp.py vdw_surface.py
-	cp $remote/templates/ESTM.py .
-	cp $remote/templates/create_inputs.sh create_inputs_%s.sh
-	source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
+					#!/bin/bash
+					remote=%s
+					filename=%s
+					cp $remote/templates/Infos.dat .
+					cp $remote/templates/vdw_surface_tp.py vdw_surface.py
+					cp $remote/templates/ESTM.py .
+					cp $remote/templates/create_inputs.sh create_inputs_%s.sh
+					source /home/yoelvis/virtual_envs/vdw_surface/bin/activate
 
-	echo Project %s >> Infos.dat
-	echo xyz_name $filename >> Infos.dat
-	echo charge %s >> Infos.dat
-	echo multiplicity %s >> Infos.dat
-	echo basis_set %s >> Infos.dat
-	echo num_states %s >> Infos.dat
-	echo selected_state %s >> Infos.dat
-	sed -i "s/FILENAME/$filename/" vdw_surface.py
-	while [ ! -f $filename ]; do
-		sleep 0.5
-	done
-	python vdw_surface.py
+					echo Project %s >> Infos.dat
+					echo xyz_name $filename >> Infos.dat
+					echo charge %s >> Infos.dat
+					echo multiplicity %s >> Infos.dat
+					echo basis_set %s >> Infos.dat
+					echo num_states %s >> Infos.dat
+					echo selected_state %s >> Infos.dat
+					sed -i "s/FILENAME/$filename/" vdw_surface.py
+					while [ ! -f $filename ]; do
+						sleep 0.5
+					done
+					python vdw_surface.py
 		    	''') %(settings.REMOTE_DIRECTORY, filename, estm.project_name, estm.project_name, estm.charge, estm.multiplicity,
 		    	estm.basis_set, estm.num_states, estm.selected_state)
 				remote_directory = settings.REMOTE_DIRECTORY + '/' + str(request.user.username) + '/' + estm.project_name + '/' 
